@@ -25,7 +25,7 @@ type TabMode = "yt-mp4" | "local-mp3" | "yt-mp3";
 type Status  = "idle" | "loading" | "success" | "error";
 
 // API URL dari environment variable
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+const API_URL = "https://web-production-16a78.up.railway.app";
 
 function YouTubeIcon({ className = "h-4 w-4" }: { className?: string }) {
   return (
