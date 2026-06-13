@@ -12,7 +12,7 @@ function CookieSettingsModal({ onClose, onSave }: { onClose: () => void; onSave:
   const [analytics, setAnalytics] = useState(false);
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm">
+    <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/70 backdrop-blur-sm">
       <div className="relative mx-4 w-full max-w-md rounded-2xl bg-gray-900 p-6 shadow-2xl border border-gray-700">
         <button
           onClick={onClose}
