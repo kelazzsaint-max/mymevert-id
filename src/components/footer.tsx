@@ -1,6 +1,12 @@
+"use client";
+
+import { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
+import { PrivacyModal } from "./privacy-modal";
 
 export function Footer() {
+  const [showPrivacy, setShowPrivacy] = useState(false);
+
   return (
     <footer
       className="relative"
@@ -68,7 +74,13 @@ export function Footer() {
               {["Features", "How It Works", "FAQ", "Privacy Policy"].map((link) => (
                 <li key={link}>
                   <a
-                    href={`#${link.toLowerCase().replace(/ /g, "-")}`}
+                    href={link === "Privacy Policy" ? "#" : `#${link.toLowerCase().replace(/ /g, "-")}`}
+                    onClick={(e) => {
+                      if (link === "Privacy Policy") {
+                        e.preventDefault();
+                        setShowPrivacy(true);
+                      }
+                    }}
                     className="
                       accent-line
                       transition-colors duration-200
@@ -119,6 +131,8 @@ export function Footer() {
             ))}
           </div>
         </div>
+
+        <PrivacyModal open={showPrivacy} onClose={() => setShowPrivacy(false)} />
       </div>
     </footer>
   );
