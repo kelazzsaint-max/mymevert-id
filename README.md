@@ -49,4 +49,4 @@ Frontend otomatis ter-deploy ke Vercel saat push ke branch `master`. Backend Rai
 
 ## License
 
-© 2025 MYMevert Team - Free for personal use.
+© 2026 MYMevert Solo - Free for personal use.
