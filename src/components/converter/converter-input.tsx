@@ -229,7 +229,7 @@ export function ConverterInput() {
   ];
 
   const isYouTubeUrl = (url: string) =>
-    /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)/.test(url.trim());
+    /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|shorts\/)|youtu\.be\/)/.test(url.trim());
 
   const resetStatus = (tab: TabMode) => {
     if (tab === "yt-mp4") {
