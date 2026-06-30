@@ -75,8 +75,13 @@ export function FAQ() {
             <AccordionItem
               key={faq.question}
               value={`item-${index}`}
-              className="reveal glass-card rounded-2xl overflow-hidden border-0 px-0"
-              style={{ transitionDelay: `${index * 60}ms` }}
+              className="reveal rounded-2xl overflow-hidden border-0 px-0"
+              style={{
+                transitionDelay: `${index * 60}ms`,
+                background: "var(--card-bg)",
+                border: "1px solid var(--border-mid)",
+                boxShadow: "var(--shadow-card)",
+              }}
             >
               <AccordionTrigger
                 className="px-5 py-5 md:px-6 md:py-6 text-left hover:no-underline group"

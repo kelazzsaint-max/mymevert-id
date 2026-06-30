@@ -82,7 +82,7 @@ export function WhyChoose() {
             return (
               <div
                 key={item.title}
-                className="reveal glass-card group rounded-2xl p-5 md:p-6 transition-all duration-300 hover:-translate-y-1"
+                className="reveal glass-card group rounded-2xl p-5 md:p-6 hover-lift transition-transform duration-300"
                 style={{
                   transitionDelay: `${index * 80}ms`,
                   boxShadow: "var(--shadow-card)",

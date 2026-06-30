@@ -68,6 +68,12 @@ export function Navbar() {
     el?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const handleMobileLinkClick = (href: string) => {
+    closeMenu();
+    const el = document.getElementById(href.replace("#", ""));
+    el?.scrollIntoView();
+  };
+
   return (
     <header
       suppressHydrationWarning
@@ -171,7 +177,7 @@ export function Navbar() {
                 {navLinks.map((link) => (
                   <button
                     key={link.href}
-                    onClick={() => handleLinkClick(link.href)}
+                    onClick={() => handleMobileLinkClick(link.href)}
                     className={`rounded-lg px-4 py-3 text-sm font-medium transition text-left ${
                       activeSection === link.href.replace("#", "") ? "bg-bg-elevated text-text-primary" : "text-text-secondary hover:bg-bg-elevated hover:text-text-primary"
                     }`}
@@ -182,7 +188,7 @@ export function Navbar() {
                   onClick={(e) => {
                     e.preventDefault();
                     closeMenu();
-                    handleLinkClick("#converter");
+                    handleMobileLinkClick("#converter");
                   }}
                   className="glow-btn mt-2 rounded-lg px-4 py-3 text-center text-sm font-semibold text-white"
                   style={{ background: "var(--grad-primary)", boxShadow: "var(--glow-blue)" }}
