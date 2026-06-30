@@ -201,7 +201,7 @@
   box-sizing: border-box;
 }
 
-* { scroll-behavior: smooth; }
+* { scroll-behavior: auto; }
 
 html {
   background: var(--bg-base);

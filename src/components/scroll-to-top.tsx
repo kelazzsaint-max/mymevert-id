@@ -14,7 +14,7 @@ export function ScrollToTopButton() {
 
   return (
     <button
-      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      onClick={() => window.scrollTo(0, 0)}
       className="fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-300"
       style={{
         background: "var(--grad-primary)",

@@ -21,7 +21,7 @@ export function PrivacyModal({ open, onClose }: { open: boolean; onClose: () => 
 
         <div className="space-y-3 text-sm text-gray-300">
           <p>
-            MYMevert.id ("we", "us", or "our") operates the website https://mymevert.id.
+            MYMevert.id (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) operates the website https://mymevert.id.
             We do not collect personal information such as name, email, or address.
           </p>
 

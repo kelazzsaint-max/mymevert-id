@@ -54,7 +54,7 @@ export function Navbar() {
   const handleLinkClick = (href: string) => {
     closeMenu();
     const el = document.getElementById(href.replace("#", ""));
-    el?.scrollIntoView({ behavior: "smooth" });
+    el?.scrollIntoView();
   };
 
   return (
