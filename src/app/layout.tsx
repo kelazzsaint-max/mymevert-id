@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { ClientNavbar } from "@/components/client-navbar";
 import { ScrollToTopButton } from "@/components/scroll-to-top";
 import { RevealObserver } from "@/components/reveal-observer";
@@ -77,6 +77,13 @@ export const metadata: Metadata = {
       "Convert YouTube videos to MP4, download MP3 audio, and convert local videos to MP3 quickly and free.",
     images: ["/og-image.png"],
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({
