@@ -683,9 +683,20 @@ select {
 }
 
 /* ── Accordion ──────────────────────────────────────── */
+[data-slot="accordion-item"] {
+  background: var(--card-bg) !important;
+  border: 1px solid var(--border-mid) !important;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
 [data-slot="accordion-item"][data-state="open"] {
   border: 1px solid rgba(61,139,255,0.35) !important;
-  box-shadow: var(--glow-blue) !important;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.25) !important;
+}
+
+/* Trigger question text color on open */
+[data-slot="accordion-trigger"][data-state="open"] span {
+  color: var(--accent-blue) !important;
 }
 
 [data-slot="accordion-item"][data-state="closed"] {

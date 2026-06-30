@@ -70,31 +70,28 @@ export function FAQ() {
           </p>
         </div>
 
-        <Accordion type="single" collapsible className="space-y-3">
+<Accordion type="single" collapsible className="space-y-3">
           {faqs.map((faq, index) => (
             <AccordionItem
               key={faq.question}
               value={`item-${index}`}
-              className="reveal rounded-2xl overflow-hidden border-0 px-0"
+              className="reveal rounded-2xl border-0 glass-card"
               style={{
                 transitionDelay: `${index * 60}ms`,
-                background: "var(--card-bg)",
-                border: "1px solid var(--border-mid)",
-                boxShadow: "var(--shadow-card)",
               }}
             >
               <AccordionTrigger
-                className="px-5 py-5 md:px-6 md:py-6 text-left hover:no-underline group"
+                className="flex w-full items-start justify-between rounded-lg px-5 py-4 text-left text-sm font-medium transition-all outline-none hover:no-underline focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 min-h-[48px] md:min-h-[52px] md:px-6 md:py-5"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 <span
-                  className="font-semibold text-base pr-4 transition-colors duration-200 group-data-[state=open]:text-accent-blue"
+                  className="font-semibold text-base pr-4 transition-colors duration-200 data-[state=open]:text-accent-blue"
                   style={{ color: "var(--text-primary)" }}
                 >
                   {faq.question}
                 </span>
               </AccordionTrigger>
-              <AccordionContent className="px-5 pb-5 md:px-6 md:pb-6">
+              <AccordionContent className="px-5 pt-0 pb-4 md:px-6 md:pt-0 md:pb-5">
                 <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
                   {faq.answer}
                 </p>
