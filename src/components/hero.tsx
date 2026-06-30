@@ -34,6 +34,29 @@ export function Hero() {
     return () => window.removeEventListener('resize', updateVideoSource);
   }, []);
 
+  // Pause video saat keluar dari layar biar gak terus-terusan makan resource HP
+  useEffect(() => {
+    const video = videoRef.current;
+    const section = document.getElementById("hero");
+    if (!video || !section) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => {});
+          setPlaying(true);
+        } else {
+          video.pause();
+          setPlaying(false);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
   const togglePlay = () => {
     if (videoRef.current) {
       if (videoRef.current.paused) {
