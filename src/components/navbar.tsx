@@ -33,7 +33,9 @@ export function Navbar() {
   const closeMenu = useCallback(() => setIsOpen(false), []);
 
   useEffect(() => {
-    const handleScroll = () => {
+    let ticking = false;
+
+    const updateScrollState = () => {
       setScrolled(window.scrollY > 20);
       const ids = navLinks.map((l) => l.href.replace("#", ""));
       for (const id of ids) {
@@ -46,7 +48,16 @@ export function Navbar() {
           }
         }
       }
+      ticking = false;
     };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateScrollState);
+        ticking = true;
+      }
+    };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
