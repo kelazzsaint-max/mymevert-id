@@ -73,7 +73,7 @@ export function Navbar() {
       suppressHydrationWarning
       className={`sticky top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "border-border-mid bg-nav-bg/90 backdrop-blur-2xl shadow-lg shadow-black/20"
+          ? "border-border-mid bg-nav-bg/90 backdrop-blur-md shadow-lg shadow-black/20"
           : "border-transparent bg-nav-bg/60 backdrop-blur-md"
       }`}
     >
@@ -164,7 +164,7 @@ export function Navbar() {
               side="right"
               className="w-72 p-0"
               aria-describedby={undefined}
-              style={{ background: "var(--nav-bg)", backdropFilter: "blur(24px)", borderLeft: "1px solid var(--border-mid)" }}
+              style={{ background: "var(--nav-bg)", backdropFilter: "blur(12px)", borderLeft: "1px solid var(--border-mid)" }}
             >
               <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
               <nav className="flex flex-col gap-1 px-4 py-6 mt-6" aria-label="Mobile navigation">
