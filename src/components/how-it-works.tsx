@@ -88,7 +88,7 @@ export function HowItWorks() {
                 )}
 
                 <div
-                  className="glass-card rounded-2xl p-5 md:p-6 text-center transition-all duration-300 hover:-translate-y-1"
+                  className="glass-card rounded-2xl p-5 md:p-6 text-center hover-lift transition-transform duration-300"
                   style={{ boxShadow: "var(--shadow-card)" }}
                 >
                   <div className="relative mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-xl"

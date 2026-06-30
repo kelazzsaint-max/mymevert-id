@@ -708,3 +708,10 @@ select {
 [data-slot="progress-indicator"] {
   background: var(--grad-cyan) !important;
 }
+
+/* ── Hover lift (desktop only, avoids stuck-hover jank on touch devices) ── */
+@media (hover: hover) and (pointer: fine) {
+  .hover-lift:hover {
+    transform: translateY(-4px);
+  }
+}
