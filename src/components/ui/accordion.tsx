@@ -48,7 +48,6 @@ function AccordionTrigger({
         {...props}
       >
         {children}
-        {/* HANYA 1 ikon dengan rotasi, lebih smooth */}
         <ChevronDownIcon 
           data-slot="accordion-trigger-icon" 
           className="pointer-events-none shrink-0 size-4 transition-transform duration-200 group-data-[state=open]/accordion-trigger:rotate-180" 
@@ -66,15 +65,10 @@ function AccordionContent({
   return (
     <AccordionPrimitive.Content
       data-slot="accordion-content"
-      className="overflow-hidden text-sm"
+      className="overflow-hidden text-sm data-[state=closed]:hidden"
       {...props}
     >
-      <div
-        className={cn(
-          "pt-0 pb-2.5",
-          className
-        )}
-      >
+      <div className={cn("pt-0 pb-2.5", className)}>
         {children}
       </div>
     </AccordionPrimitive.Content>

@@ -717,48 +717,25 @@ select {
   color: var(--accent-blue) !important;
 }
 
-/* Accordion content - GPU accelerated animation */
-[data-slot="accordion-content"] {
-  will-change: height, opacity;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-/* Mobile: faster animation + custom keyframes */
-@media (max-width: 768px) {
+/* Desktop: GPU accelerated animation (tetap ada) */
+@media (min-width: 769px) {
   [data-slot="accordion-content"] {
-    transition-duration: 150ms !important;
-  }
-
-  [data-slot="accordion-content"][data-state="open"] {
-    animation: accordion-down 200ms ease-out;
-  }
-
-  [data-slot="accordion-content"][data-state="closed"] {
-    animation: accordion-up 200ms ease-out;
+    will-change: height, opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 }
 
-@keyframes accordion-down {
-  from {
-    height: 0;
-    opacity: 0;
-  }
-  to {
-    height: var(--radix-accordion-content-height);
-    opacity: 1;
-  }
-}
-
-@keyframes accordion-up {
-  from {
-    height: var(--radix-accordion-content-height);
-    opacity: 1;
-  }
-  to {
-    height: 0;
-    opacity: 0;
+/* Mobile & Portrait: HAPUS semua animasi height - langsung show/hide */
+@media (max-width: 768px), (orientation: portrait) {
+  [data-slot="accordion-content"] {
+    transition: none !important;
+    animation: none !important;
+    will-change: auto !important;
+    transform: none !important;
+    backface-visibility: unset !important;
+    -webkit-backface-visibility: unset !important;
   }
 }
 
