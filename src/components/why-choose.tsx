@@ -1,4 +1,5 @@
 import { Zap, Shield, CheckCircle2, Layers3 } from "lucide-react";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const items = [
   {
@@ -36,6 +37,7 @@ const items = [
 ];
 
 export function WhyChoose() {
+  useScrollReveal();
   return (
     <section id="why-choose" className="relative py-20 md:py-24">
       <div
