@@ -1,3 +1,4 @@
+"use client";
 import { Zap, Shield, CheckCircle2, Layers3 } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 

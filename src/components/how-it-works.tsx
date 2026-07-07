@@ -1,3 +1,4 @@
+"use client";
 import { Link2, Settings2, Video, Download } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
