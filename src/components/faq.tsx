@@ -44,7 +44,6 @@ export function FAQ() {
   return (
     <section id="faq" className="py-20 md:py-24">
       <div className="mx-auto max-w-4xl px-4">
-
         <div className="reveal text-center mb-10 md:mb-14">
           <span
             className="badge mb-4"
@@ -70,22 +69,19 @@ export function FAQ() {
           </p>
         </div>
 
-<Accordion type="single" collapsible className="space-y-3">
+        <Accordion type="single" collapsible className="space-y-3">
           {faqs.map((faq, index) => (
             <AccordionItem
               key={faq.question}
               value={`item-${index}`}
-              className="reveal rounded-2xl border-0 glass-card"
-              style={{
-                transitionDelay: `${index * 60}ms`,
-              }}
+              className="rounded-2xl border-0"
             >
               <AccordionTrigger
-                className="flex w-full items-start justify-between rounded-lg px-5 py-4 text-left text-sm font-medium transition-all outline-none hover:no-underline focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 min-h-[48px] md:min-h-[52px] md:px-6 md:py-5"
+                className="flex w-full items-center justify-between px-5 py-4 text-left text-sm font-medium outline-none min-h-12 md:min-h-13 md:px-6 md:py-5"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 <span
-                  className="font-semibold text-base pr-4 transition-colors duration-200 data-[state=open]:text-accent-blue"
+                  className="font-semibold text-base pr-4"
                   style={{ color: "var(--text-primary)" }}
                 >
                   {faq.question}
@@ -99,7 +95,6 @@ export function FAQ() {
             </AccordionItem>
           ))}
         </Accordion>
-
       </div>
     </section>
   );
