@@ -25,7 +25,7 @@ type TabMode = "yt-mp4" | "local-mp3" | "yt-mp3";
 type Status  = "idle" | "loading" | "success" | "error";
 
 // API URL dari environment variable
-const API_URL = "https://web-production-16a78.up.railway.app";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://web-production-16a78.up.railway.app";
 
 function YouTubeIcon({ className = "h-4 w-4" }: { className?: string }) {
   return (
@@ -265,49 +265,70 @@ export function ConverterInput() {
     URL.revokeObjectURL(url);
   }
 
-  // Generic polling function
+// Generic polling function dengan EXPONENTIAL BACKOFF
+// Delay antar cek: 1s → 2s → 4s → 8s → 10s (mentok di 10s, nggak naik lagi)
   const startPolling = (
     jobId: string,
     setProgress: (p: number) => void,
     setStatus: (s: Status) => void,
     setError: (e: string) => void,
   ) => {
-    const interval = setInterval(async () => {
-      try {
-        const res = await fetch(`${API_URL}/convert/status/${jobId}`);
-        const data = await res.json();
-        
-        setProgress(data.progress);
-        
-        if (data.status === "completed") {
-          clearInterval(interval);
-          
-          // Download file
-          const downloadRes = await fetch(`${API_URL}/convert/download/${jobId}`);
-          const blob = await downloadRes.blob();
-          const filename = data.filename || `mymevert-${Date.now()}.mp4`;
-          
-          triggerDownload(blob, filename);
-          setStatus("success");
-          setProgress(100);
-          
-        } else if (data.status === "error") {
-          clearInterval(interval);
-          setStatus("error");
-          setError(data.error || "Conversion failed");
-        }
-      } catch (err) {
-        console.error("Polling error:", err);
-      }
-    }, 1000);
-    
-    // Timeout after 5 minutes
-    setTimeout(() => {
-      clearInterval(interval);
+    const startTime = Date.now();
+    let cancelled = false;
+
+  const poll = async (attempt: number) => {
+    if (cancelled) return;
+
+    // Timeout keseluruhan tetap 5 menit, dihitung dari total waktu berjalan
+    // (bukan per-attempt, biar konsisten sama logic timeout yang lama)
+    if (Date.now() - startTime > 300000) {
       setStatus("error");
       setError("Conversion timeout. Please try again.");
-    }, 300000);
+      return;
+    }
+
+    const delay = Math.min(1000 * Math.pow(2, attempt), 10000);
+    await new Promise((r) => setTimeout(r, delay));
+    if (cancelled) return;
+
+    try {
+      const res = await fetch(`${API_URL}/convert/status/${jobId}`);
+      const data = await res.json();
+
+      setProgress(data.progress);
+
+      if (data.status === "completed") {
+        const downloadRes = await fetch(`${API_URL}/convert/download/${jobId}`);
+        const blob = await downloadRes.blob();
+        const filename = data.filename || `mymevert-${Date.now()}.mp4`;
+
+        triggerDownload(blob, filename);
+        setStatus("success");
+        setProgress(100);
+        // berhenti polling, nggak manggil poll() lagi
+
+      } else if (data.status === "error") {
+        setStatus("error");
+        setError(data.error || "Conversion failed");
+        // berhenti polling
+
+      } else {
+        // masih "processing", lanjut cek lagi dengan delay yang lebih lama
+        poll(attempt + 1);
+      }
+    } catch (err) {
+      console.error("Polling error:", err);
+      // tetap lanjut coba lagi walau ada error jaringan, dengan delay yang naik
+      poll(attempt + 1);
+    }
   };
+
+  poll(0);
+
+  // Bonus: return function buat cancel polling manual kalau nanti dibutuhkan
+  // (misal user pindah tab / component unmount di tengah proses)
+  return () => { cancelled = true; };
+};
 
   // ============= YT-MP4 with Polling =============
   async function handleYtMp4() {
