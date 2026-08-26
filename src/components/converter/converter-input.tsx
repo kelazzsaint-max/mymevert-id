@@ -276,54 +276,54 @@ export function ConverterInput() {
     const startTime = Date.now();
     let cancelled = false;
 
-  const poll = async (attempt: number) => {
-    if (cancelled) return;
+    const poll = async (attempt: number) => {
+      if (cancelled) return;
 
-    // Timeout keseluruhan tetap 5 menit, dihitung dari total waktu berjalan
-    // (bukan per-attempt, biar konsisten sama logic timeout yang lama)
-    if (Date.now() - startTime > 300000) {
-      setStatus("error");
-      setError("Conversion timeout. Please try again.");
-      return;
-    }
-
-    const delay = Math.min(1000 * Math.pow(2, attempt), 10000);
-    await new Promise((r) => setTimeout(r, delay));
-    if (cancelled) return;
-
-    try {
-      const res = await fetch(`${API_URL}/convert/status/${jobId}`);
-      const data = await res.json();
-
-      setProgress(data.progress);
-
-      if (data.status === "completed") {
-        const downloadRes = await fetch(`${API_URL}/convert/download/${jobId}`);
-        const blob = await downloadRes.blob();
-        const filename = data.filename || `mymevert-${Date.now()}.mp4`;
-
-        triggerDownload(blob, filename);
-        setStatus("success");
-        setProgress(100);
-        // berhenti polling, nggak manggil poll() lagi
-
-      } else if (data.status === "error") {
+      // Timeout keseluruhan tetap 5 menit, dihitung dari total waktu berjalan
+      // (bukan per-attempt, biar konsisten sama logic timeout yang lama)
+      if (Date.now() - startTime > 300000) {
         setStatus("error");
-        setError(data.error || "Conversion failed");
-        // berhenti polling
+        setError("Conversion timeout. Please try again.");
+        return;
+      }
 
-      } else {
-        // masih "processing", lanjut cek lagi dengan delay yang lebih lama
+      const delay = Math.min(1000 * Math.pow(2, attempt), 10000);
+      await new Promise((r) => setTimeout(r, delay));
+      if (cancelled) return;
+
+      try {
+        const res = await fetch(`${API_URL}/convert/status/${jobId}`);
+        const data = await res.json();
+
+        setProgress(data.progress);
+
+        if (data.status === "completed") {
+          const downloadRes = await fetch(`${API_URL}/convert/download/${jobId}`);
+          const blob = await downloadRes.blob();
+          const filename = data.filename || `mymevert-${Date.now()}.mp4`;
+
+          triggerDownload(blob, filename);
+          setStatus("success");
+          setProgress(100);
+          // berhenti polling, nggak manggil poll() lagi
+
+        } else if (data.status === "error") {
+          setStatus("error");
+          setError(data.error || "Conversion failed");
+          // berhenti polling
+
+        } else {
+          // masih "processing", lanjut cek lagi dengan delay yang lebih lama
+          poll(attempt + 1);
+        }
+      } catch (err) {
+        console.error("Polling error:", err);
+        // tetap lanjut coba lagi walau ada error jaringan, dengan delay yang naik
         poll(attempt + 1);
       }
-    } catch (err) {
-      console.error("Polling error:", err);
-      // tetap lanjut coba lagi walau ada error jaringan, dengan delay yang naik
-      poll(attempt + 1);
-    }
-  };
+    };
 
-  poll(0);
+    poll(0);
 
   // Bonus: return function buat cancel polling manual kalau nanti dibutuhkan
   // (misal user pindah tab / component unmount di tengah proses)
