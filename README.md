@@ -31,12 +31,13 @@ Website converter media gratis yang memungkinkan kamu mengonversi video YouTube 
 Buat file `.env.local` di root project:
 
 ```bash
-NEXT_PUBLIC_API_URL=https://web-production-16a78.up.railway.app
+NEXT_PUBLIC_API_URL=https://stauroscopically-fluorescent-shelli.ngrok-free.dev
 ```
 
 - Frontend membaca `NEXT_PUBLIC_API_URL` dari environment variable di `src/components/converter/converter-input.tsx:28`.
-- Jika `.env.local` tidak di-set, aplikasi fallback ke URL Railway default.
+- Jika `.env.local` tidak di-set, aplikasi fallback ke URL ngrok default.
 - File `.env.local` **tidak** di-commit ke repo (sudah ada di `.gitignore`).
+- Backend saat ini berjalan via **ngrok** (tunnel HTTPS ke localhost). URL ngrok bisa berubah jika tunnel di-restart.
 
 ## Optimasi yang Diterapkan
 
@@ -84,7 +85,7 @@ Buka [http://localhost:3000](http://localhost:3000) di browser.
 
 ## Deploy
 
-Frontend otomatis ter-deploy ke Vercel saat push ke branch `master`. Backend Railway live di `https://web-production-16a78.up.railway.app` (catatan: free tier Railway bisa non-aktif sewaktu-waktu).
+Frontend otomatis ter-deploy ke Vercel saat push ke branch `master`. Backend saat ini berjalan di `https://stauroscopically-fluorescent-shelli.ngrok-free.dev` via ngrok tunnel (catatan: URL ngrok bisa berubah sewaktu-waktu jika tunnel di-restart).
 
 ## License
 
