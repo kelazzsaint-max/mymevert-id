@@ -139,26 +139,45 @@ export function Navbar() {
           >
             {/* Knob */}
             <div
-              className="flex h-8 w-8 items-center justify-center rounded-full transition-all duration-1000 ease-in-out"
+              className="relative flex h-8 w-8 items-center justify-center rounded-full transition-all duration-1000 ease-in-out"
               style={{
                 background: resolvedTheme === "dark" ? "#0f172a" : "#ffffff",
                 transform: resolvedTheme === "dark" ? "translateX(40px)" : "translateX(0)",
                 boxShadow: resolvedTheme === "dark" ? "0 0 10px rgba(255,255,255,0.2)" : "0 0 10px var(--accent-blue)",
               }}
             >
-              <div className="transition-opacity duration-300">
-                {!mounted ? (
-                  <span className="h-4 w-4" />
-                ) : resolvedTheme === "dark" ? (
-                  <div className="relative flex items-center justify-center">
-                    <Moon className="h-4 w-4 text-white" />
-                    <Sparkles className="absolute -right-1 -top-1 h-2.5 w-2.5 text-white/80" />
-                    <Sparkles className="absolute -left-1 -bottom-0.5 h-2 w-2 text-white/60" />
+              {!mounted ? (
+                <span className="h-4 w-4" />
+              ) : (
+                <>
+                  {/* Sun icon - light mode */}
+                  <div
+                    className="absolute inset-0 flex items-center justify-center transition-all duration-700 ease-in-out"
+                    style={{
+                      opacity: resolvedTheme === "light" ? 1 : 0,
+                      transform: resolvedTheme === "light" ? "scale(1) rotate(0deg)" : "scale(0.5) rotate(-45deg)",
+                      pointerEvents: resolvedTheme === "light" ? "auto" : "none",
+                    }}
+                  >
+                    <Sun className="h-4 w-4" style={{ color: "var(--accent-blue)" }} />
                   </div>
-                ) : (
-                  <Sun className="h-4 w-4" style={{ color: "var(--accent-blue)" }} />
-                )}
-              </div>
+                  {/* Moon + Sparkles - dark mode */}
+                  <div
+                    className="absolute inset-0 flex items-center justify-center transition-all duration-700 ease-in-out"
+                    style={{
+                      opacity: resolvedTheme === "dark" ? 1 : 0,
+                      transform: resolvedTheme === "dark" ? "scale(1) rotate(0deg)" : "scale(0.5) rotate(45deg)",
+                      pointerEvents: resolvedTheme === "dark" ? "auto" : "none",
+                    }}
+                  >
+                    <div className="relative flex items-center justify-center">
+                      <Moon className="h-4 w-4 text-white" />
+                      <Sparkles className="absolute -right-1 -top-1 h-2.5 w-2.5 text-white/80" />
+                      <Sparkles className="absolute -left-1 -bottom-0.5 h-2 w-2 text-white/60" />
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </button>
 
