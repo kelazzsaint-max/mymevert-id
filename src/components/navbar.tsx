@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useCallback, useSyncExternalStore } from "react";
-import { Menu, X, Sun, Moon } from "lucide-react";
+import { Menu, X, Sun, Moon, Sparkles } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import {
@@ -132,26 +132,33 @@ export function Navbar() {
             <TooltipTrigger asChild>
               <button
                 onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-                className="relative flex h-10 w-16 items-center rounded-full p-1 transition-all duration-300"
+                className="relative flex h-10 w-20 items-center rounded-full p-1 transition-colors duration-300"
                 style={{
-                  background: "var(--bg-elevated)",
+                  background: resolvedTheme === "dark" ? "var(--bg-base)" : "var(--bg-elevated)",
                   border: "1px solid var(--border-mid)",
                 }}
                 aria-label="Toggle theme"
                 suppressHydrationWarning
               >
+                {/* Knob */}
                 <div
-                  className="flex h-8 w-8 items-center justify-center rounded-full bg-white transition-transform duration-300"
+                  className="flex h-8 w-8 items-center justify-center rounded-full transition-transform duration-300"
                   style={{
-                    boxShadow: "0 0 12px var(--accent-blue)",
+                    background: resolvedTheme === "dark" ? "#0f172a" : "#ffffff",
+                    transform: resolvedTheme === "dark" ? "translateX(40px)" : "translateX(0)",
+                    boxShadow: resolvedTheme === "dark" ? "0 0 10px rgba(255,255,255,0.2)" : "0 0 10px var(--accent-blue)",
                   }}
                 >
                   {!mounted ? (
                     <span className="h-4 w-4" />
                   ) : resolvedTheme === "dark" ? (
-                    <Sun className="h-4 w-4" style={{ color: "var(--accent-blue)" }} />
+                    <div className="relative flex items-center justify-center">
+                      <Moon className="h-4 w-4 text-white" />
+                      <Sparkles className="absolute -right-1 -top-1 h-2.5 w-2.5 text-white/80" />
+                      <Sparkles className="absolute -left-1 -bottom-0.5 h-2 w-2 text-white/60" />
+                    </div>
                   ) : (
-                    <Moon className="h-4 w-4" style={{ color: "var(--accent-blue)" }} />
+                    <Sun className="h-4 w-4" style={{ color: "var(--accent-blue)" }} />
                   )}
                 </div>
               </button>
