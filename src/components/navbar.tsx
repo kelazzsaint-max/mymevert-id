@@ -132,11 +132,28 @@ export function Navbar() {
             <TooltipTrigger asChild>
               <button
                 onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-                className="flex h-9 w-9 items-center justify-center rounded-lg border border-border-mid text-text-secondary transition-all hover:border-accent-blue hover:text-accent-blue"
+                className="relative flex h-10 w-16 items-center rounded-full p-1 transition-all duration-300"
+                style={{
+                  background: "var(--bg-elevated)",
+                  border: "1px solid var(--border-mid)",
+                }}
                 aria-label="Toggle theme"
                 suppressHydrationWarning
               >
-                {!mounted ? <span className="h-4 w-4" /> : resolvedTheme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                <div
+                  className="flex h-8 w-8 items-center justify-center rounded-full bg-white transition-transform duration-300"
+                  style={{
+                    boxShadow: "0 0 12px var(--accent-blue)",
+                  }}
+                >
+                  {!mounted ? (
+                    <span className="h-4 w-4" />
+                  ) : resolvedTheme === "dark" ? (
+                    <Sun className="h-4 w-4" style={{ color: "var(--accent-blue)" }} />
+                  ) : (
+                    <Moon className="h-4 w-4" style={{ color: "var(--accent-blue)" }} />
+                  )}
+                </div>
               </button>
             </TooltipTrigger>
             <TooltipContent 
