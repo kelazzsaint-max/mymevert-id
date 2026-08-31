@@ -129,7 +129,7 @@ export function Navbar() {
         <div className="flex items-center gap-2 ml-auto">
           <button
             onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-            className="relative flex h-10 w-20 items-center rounded-full p-1 transition-all duration-1000 ease-in-out"
+            className="relative flex h-10 w-20 items-center rounded-full p-1 transition-all duration-1000 ease-in-out theme-toggle-pill"
             style={{
               background: resolvedTheme === "dark" ? "var(--bg-base)" : "var(--bg-elevated)",
               border: "1px solid var(--border-mid)",
@@ -139,7 +139,7 @@ export function Navbar() {
           >
             {/* Knob */}
             <div
-              className="relative flex h-8 w-8 items-center justify-center rounded-full transition-all duration-1000 ease-in-out"
+              className="relative flex h-8 w-8 items-center justify-center rounded-full transition-all duration-1000 ease-in-out theme-toggle-knob"
               style={{
                 background: resolvedTheme === "dark" ? "#0f172a" : "#ffffff",
                 transform: resolvedTheme === "dark" ? "translateX(40px)" : "translateX(0)",
@@ -152,7 +152,7 @@ export function Navbar() {
                 <>
                   {/* Sun icon - light mode */}
                   <div
-                    className="absolute inset-0 flex items-center justify-center transition-all duration-700 ease-in-out"
+                    className="absolute inset-0 flex items-center justify-center transition-all duration-700 ease-in-out theme-toggle-icon"
                     style={{
                       opacity: resolvedTheme === "light" ? 1 : 0,
                       transform: resolvedTheme === "light" ? "scale(1) rotate(0deg)" : "scale(0.5) rotate(-45deg)",
@@ -163,7 +163,7 @@ export function Navbar() {
                   </div>
                   {/* Moon + Sparkles - dark mode */}
                   <div
-                    className="absolute inset-0 flex items-center justify-center transition-all duration-700 ease-in-out"
+                    className="absolute inset-0 flex items-center justify-center transition-all duration-700 ease-in-out theme-toggle-icon"
                     style={{
                       opacity: resolvedTheme === "dark" ? 1 : 0,
                       transform: resolvedTheme === "dark" ? "scale(1) rotate(0deg)" : "scale(0.5) rotate(45deg)",

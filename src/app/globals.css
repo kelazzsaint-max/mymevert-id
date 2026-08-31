@@ -750,3 +750,23 @@ select {
     transform: translateY(-4px);
   }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   THEME TOGGLE - Override disableTransitionOnChange
+   ═══════════════════════════════════════════════════════════ */
+
+/* 
+  next-themes disableTransitionOnChange menyuntikkan
+  * { transition: none !important; } ke seluruh halaman saat theme berubah.
+  Rule di bawah ini memaksa transition tetap aktif HANYA untuk tombol toggle
+  theme, sementara elemen lain tetap instan seperti yang diinginkan.
+*/
+
+.theme-toggle-pill,
+.theme-toggle-knob {
+  transition: all 1s ease-in-out !important;
+}
+
+.theme-toggle-icon {
+  transition: all 0.7s ease-in-out !important;
+}
