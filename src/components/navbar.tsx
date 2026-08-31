@@ -129,7 +129,7 @@ export function Navbar() {
         <div className="flex items-center gap-2 ml-auto">
           <button
             onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-            className="relative flex h-10 w-20 items-center rounded-full p-1 transition-all duration-700 ease-in-out"
+            className="relative flex h-10 w-20 items-center rounded-full p-1 transition-all duration-1000 ease-in-out"
             style={{
               background: resolvedTheme === "dark" ? "var(--bg-base)" : "var(--bg-elevated)",
               border: "1px solid var(--border-mid)",
@@ -139,7 +139,7 @@ export function Navbar() {
           >
             {/* Knob */}
             <div
-              className="flex h-8 w-8 items-center justify-center rounded-full transition-all duration-700 ease-in-out"
+              className="flex h-8 w-8 items-center justify-center rounded-full transition-all duration-1000 ease-in-out"
               style={{
                 background: resolvedTheme === "dark" ? "#0f172a" : "#ffffff",
                 transform: resolvedTheme === "dark" ? "translateX(40px)" : "translateX(0)",
