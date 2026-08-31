@@ -2,7 +2,6 @@
 import { useState, useEffect, useCallback, useSyncExternalStore } from "react";
 import { Menu, X, Sun, Moon, Sparkles } from "lucide-react";
 import { useTheme } from "next-themes";
-import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import {
   Sheet,
   SheetContent,
@@ -128,57 +127,40 @@ export function Navbar() {
 
         {/* Right */}
         <div className="flex items-center gap-2 ml-auto">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-                className="relative flex h-10 w-20 items-center rounded-full p-1 transition-all duration-500 ease-in-out"
-                style={{
-                  background: resolvedTheme === "dark" ? "var(--bg-base)" : "var(--bg-elevated)",
-                  border: "1px solid var(--border-mid)",
-                }}
-                aria-label="Toggle theme"
-                suppressHydrationWarning
-              >
-                {/* Knob */}
-                <div
-                  className="flex h-8 w-8 items-center justify-center rounded-full transition-all duration-500 ease-in-out"
-                  style={{
-                    background: resolvedTheme === "dark" ? "#0f172a" : "#ffffff",
-                    transform: resolvedTheme === "dark" ? "translateX(40px)" : "translateX(0)",
-                    boxShadow: resolvedTheme === "dark" ? "0 0 10px rgba(255,255,255,0.2)" : "0 0 10px var(--accent-blue)",
-                  }}
-                >
-                  <div className="transition-opacity duration-300">
-                    {!mounted ? (
-                      <span className="h-4 w-4" />
-                    ) : resolvedTheme === "dark" ? (
-                      <div className="relative flex items-center justify-center">
-                        <Moon className="h-4 w-4 text-white" />
-                        <Sparkles className="absolute -right-1 -top-1 h-2.5 w-2.5 text-white/80" />
-                        <Sparkles className="absolute -left-1 -bottom-0.5 h-2 w-2 text-white/60" />
-                      </div>
-                    ) : (
-                      <Sun className="h-4 w-4" style={{ color: "var(--accent-blue)" }} />
-                    )}
+          <button
+            onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+            className="relative flex h-10 w-20 items-center rounded-full p-1 transition-all duration-700 ease-in-out"
+            style={{
+              background: resolvedTheme === "dark" ? "var(--bg-base)" : "var(--bg-elevated)",
+              border: "1px solid var(--border-mid)",
+            }}
+            aria-label="Toggle theme"
+            suppressHydrationWarning
+          >
+            {/* Knob */}
+            <div
+              className="flex h-8 w-8 items-center justify-center rounded-full transition-all duration-700 ease-in-out"
+              style={{
+                background: resolvedTheme === "dark" ? "#0f172a" : "#ffffff",
+                transform: resolvedTheme === "dark" ? "translateX(40px)" : "translateX(0)",
+                boxShadow: resolvedTheme === "dark" ? "0 0 10px rgba(255,255,255,0.2)" : "0 0 10px var(--accent-blue)",
+              }}
+            >
+              <div className="transition-opacity duration-300">
+                {!mounted ? (
+                  <span className="h-4 w-4" />
+                ) : resolvedTheme === "dark" ? (
+                  <div className="relative flex items-center justify-center">
+                    <Moon className="h-4 w-4 text-white" />
+                    <Sparkles className="absolute -right-1 -top-1 h-2.5 w-2.5 text-white/80" />
+                    <Sparkles className="absolute -left-1 -bottom-0.5 h-2 w-2 text-white/60" />
                   </div>
-                </div>
-              </button>
-            </TooltipTrigger>
-            <TooltipContent 
-                side="bottom" 
-                sideOffset={0}
-                className="border-0 px-2 py-1"
-                style={{
-                  backgroundColor: resolvedTheme === "dark" ? "#1f2937" : "#f3f4f6",
-                  color: resolvedTheme === "dark" ? "#ffffff" : "#111827"
-                }}
-              >
-                <p className="text-xs font-medium" style={{ margin: 0 }}>
-                  {resolvedTheme === "dark" ? "Light" : "Dark"}
-                </p>
-              </TooltipContent>
-          </Tooltip>
+                ) : (
+                  <Sun className="h-4 w-4" style={{ color: "var(--accent-blue)" }} />
+                )}
+              </div>
+            </div>
+          </button>
 
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
