@@ -148,12 +148,6 @@ export function Navbar() {
                   color: resolvedTheme === "dark" ? "#ffffff" : "#111827"
                 }}
               >
-                {/* Hilangkan arrow dengan CSS */}
-                <style>{`
-                  [data-radix-popper-content-wrapper] [data-side="bottom"]::before {
-                    display: none !important;
-                  }
-                `}</style>
                 <p className="text-xs font-medium" style={{ margin: 0 }}>
                   {resolvedTheme === "dark" ? "Light" : "Dark"}
                 </p>
