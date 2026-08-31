@@ -131,8 +131,9 @@ export function Navbar() {
             onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
             className="relative flex h-10 w-20 items-center rounded-full p-1 transition-all duration-450 ease-in-out theme-toggle-pill"
             style={{
-              background: resolvedTheme === "dark" ? "var(--bg-base)" : "var(--bg-elevated)",
-              border: "1px solid var(--border-mid)",
+              background: resolvedTheme === "dark" ? "var(--bg-elevated)" : "var(--bg-elevated)",
+              border: resolvedTheme === "dark" ? "1px solid rgba(255,255,255,0.15)" : "1px solid var(--border-mid)",
+              boxShadow: resolvedTheme === "dark" ? "0 0 0 1px rgba(255,255,255,0.08) inset" : "none",
             }}
             aria-label="Toggle theme"
             suppressHydrationWarning
