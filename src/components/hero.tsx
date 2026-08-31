@@ -10,6 +10,33 @@ export function Hero() {
   const [playing, setPlaying] = useState(true);
   const { resolvedTheme } = useTheme();
 
+  // Autoplay sekali saja saat mount, tanpa attribute autoPlay di <video>
+  // supaya tidak ter-trigger ulang otomatis tiap kali src berubah saat resize
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.play().catch(() => {});
+  }, []);
+
+  // Sinkronisasi state React dengan event native play/pause dari video element
+  // Supaya tombol play/pause selalu menampilkan icon yang benar,
+  // apapun penyebab perubahan state video (klik tombol, resize src, autoplay policy, dll)
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const onPlay = () => setPlaying(true);
+    const onPause = () => setPlaying(false);
+
+    video.addEventListener('play', onPlay);
+    video.addEventListener('pause', onPause);
+
+    return () => {
+      video.removeEventListener('play', onPlay);
+      video.removeEventListener('pause', onPause);
+    };
+  }, []);
+
   // Ganti video berdasarkan ukuran layar
   useEffect(() => {
     const video = videoRef.current;
@@ -70,7 +97,9 @@ export function Hero() {
   };
 
   // OVERLAY TETAP GELAP (tidak berubah di light mode)
-  const overlayStyle = "linear-gradient(to bottom, rgba(10,10,15,0.75) 0%, rgba(10,10,15,0.5) 50%, rgba(10,10,15,0.85) 100%)";
+  // Bottom di-shared jadi 0.5 (bukan 0.85) supaya transisi ke section berikutnya lebih mulus,
+  // tidak menciptakan garis gelap keras di batas akhir Hero.
+  const overlayStyle = "linear-gradient(to bottom, rgba(10,10,15,0.75) 0%, rgba(10,10,15,0.5) 50%, rgba(10,10,15,0.5) 100%)";
 
   // Style tombol berdasarkan tema (tetap)
   const buttonStyle = {
@@ -95,7 +124,6 @@ export function Hero() {
         <div className="relative h-full w-full overflow-hidden">
           <video
             ref={videoRef}
-            autoPlay
             loop
             muted
             playsInline

@@ -232,17 +232,17 @@ export function ConverterInput() {
     /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|shorts\/)|youtu\.be\/)/.test(url.trim());
 
   const resetStatus = (tab: TabMode) => {
-    if (tab === "yt-mp4") {
+    if (tab === "yt-mp4" && ytMp4Status !== "loading") {
       setYtMp4Status("idle");
       setYtMp4Error("");
       setYtMp4Progress(0);
     }
-    if (tab === "yt-mp3") {
+    if (tab === "yt-mp3" && ytMp3Status !== "loading") {
       setYtMp3Status("idle");
       setYtMp3Error("");
       setYtMp3Progress(0);
     }
-    if (tab === "local-mp3") {
+    if (tab === "local-mp3" && localStatus !== "loading") {
       setLocalStatus("idle");
       setLocalError("");
       setLocalProgress(0);
