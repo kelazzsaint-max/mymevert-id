@@ -132,7 +132,7 @@ export function Navbar() {
             <TooltipTrigger asChild>
               <button
                 onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-                className="relative flex h-10 w-20 items-center rounded-full p-1 transition-colors duration-300"
+                className="relative flex h-10 w-20 items-center rounded-full p-1 transition-all duration-500 ease-in-out"
                 style={{
                   background: resolvedTheme === "dark" ? "var(--bg-base)" : "var(--bg-elevated)",
                   border: "1px solid var(--border-mid)",
@@ -142,24 +142,26 @@ export function Navbar() {
               >
                 {/* Knob */}
                 <div
-                  className="flex h-8 w-8 items-center justify-center rounded-full transition-transform duration-300"
+                  className="flex h-8 w-8 items-center justify-center rounded-full transition-all duration-500 ease-in-out"
                   style={{
                     background: resolvedTheme === "dark" ? "#0f172a" : "#ffffff",
                     transform: resolvedTheme === "dark" ? "translateX(40px)" : "translateX(0)",
                     boxShadow: resolvedTheme === "dark" ? "0 0 10px rgba(255,255,255,0.2)" : "0 0 10px var(--accent-blue)",
                   }}
                 >
-                  {!mounted ? (
-                    <span className="h-4 w-4" />
-                  ) : resolvedTheme === "dark" ? (
-                    <div className="relative flex items-center justify-center">
-                      <Moon className="h-4 w-4 text-white" />
-                      <Sparkles className="absolute -right-1 -top-1 h-2.5 w-2.5 text-white/80" />
-                      <Sparkles className="absolute -left-1 -bottom-0.5 h-2 w-2 text-white/60" />
-                    </div>
-                  ) : (
-                    <Sun className="h-4 w-4" style={{ color: "var(--accent-blue)" }} />
-                  )}
+                  <div className="transition-opacity duration-300">
+                    {!mounted ? (
+                      <span className="h-4 w-4" />
+                    ) : resolvedTheme === "dark" ? (
+                      <div className="relative flex items-center justify-center">
+                        <Moon className="h-4 w-4 text-white" />
+                        <Sparkles className="absolute -right-1 -top-1 h-2.5 w-2.5 text-white/80" />
+                        <Sparkles className="absolute -left-1 -bottom-0.5 h-2 w-2 text-white/60" />
+                      </div>
+                    ) : (
+                      <Sun className="h-4 w-4" style={{ color: "var(--accent-blue)" }} />
+                    )}
+                  </div>
                 </div>
               </button>
             </TooltipTrigger>
