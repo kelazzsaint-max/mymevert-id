@@ -292,13 +292,17 @@ export function ConverterInput() {
       if (cancelled) return;
 
       try {
-        const res = await fetch(`${API_URL}/convert/status/${jobId}`);
+        const res = await fetch(`${API_URL}/convert/status/${jobId}`, {
+          headers: { "ngrok-skip-browser-warning": "true" },
+        });
         const data = await res.json();
 
         setProgress(data.progress);
 
         if (data.status === "completed") {
-          const downloadRes = await fetch(`${API_URL}/convert/download/${jobId}`);
+          const downloadRes = await fetch(`${API_URL}/convert/download/${jobId}`, {
+            headers: { "ngrok-skip-browser-warning": "true" },
+          });
           const blob = await downloadRes.blob();
           const filename = data.filename || `mymevert-${Date.now()}.mp4`;
 
@@ -342,7 +346,7 @@ export function ConverterInput() {
     try {
       const res = await fetch(`${API_URL}/convert/yt-mp4/start`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "ngrok-skip-browser-warning": "true" },
         body: JSON.stringify({ url: ytMp4Url, resolution: ytMp4Res })
       });
       
@@ -369,7 +373,7 @@ export function ConverterInput() {
     try {
       const res = await fetch(`${API_URL}/convert/yt-mp3/start`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "ngrok-skip-browser-warning": "true" },
         body: JSON.stringify({ url: ytMp3Url })
       });
       
@@ -402,6 +406,7 @@ export function ConverterInput() {
       
       const res = await fetch(`${API_URL}/convert/local-mp3/start`, {
         method: "POST",
+        headers: { "ngrok-skip-browser-warning": "true" },
         body: form
       });
       
