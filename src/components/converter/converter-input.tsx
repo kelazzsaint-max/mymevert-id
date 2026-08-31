@@ -287,7 +287,7 @@ export function ConverterInput() {
         return;
       }
 
-      const delay = Math.min(1000 * Math.pow(2, attempt), 10000);
+      const delay = Math.min(500 * Math.pow(2, attempt), 10000);
       await new Promise((r) => setTimeout(r, delay));
       if (cancelled) return;
 
