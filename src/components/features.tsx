@@ -1,6 +1,5 @@
 "use client";
 import { Download, Music, Video, FileUp, Sparkles } from "lucide-react";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
 const features = [
   {
     title: "YouTube → MP4",
@@ -37,7 +36,6 @@ const features = [
 ];
 
 export function Features() {
-  useScrollReveal();
   return (
     <section id="features" className="relative overflow-hidden py-20 md:py-24">
       <div

@@ -1,6 +1,5 @@
 "use client";
 import { Link2, Settings2, Video, Download } from "lucide-react";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const steps = [
   {
@@ -34,7 +33,6 @@ const steps = [
 ];
 
 export function HowItWorks() {
-  useScrollReveal();
   return (
     <section id="how-it-works" className="relative overflow-hidden py-20 md:py-24">
       <div

@@ -14,9 +14,9 @@ Website converter media gratis yang memungkinkan kamu mengonversi video YouTube 
 - **UI Components**: shadcn/ui (Radix UI)
 - **Icons**: Lucide React
 - **Deployment**: Vercel
-- **Backend**: Railway (FastAPI)
+- **Backend**: FastAPI (local + ngrok tunnel)
 
-## Endpoints Backend (Railway)
+## Endpoints Backend
 
 | Fungsi | Method | URL |
 |--------|--------|-----|
@@ -52,6 +52,8 @@ NEXT_PUBLIC_API_URL=https://stauroscopically-fluorescent-shelli.ngrok-free.dev
 - **Responsive Navbar**: Tombol toggle theme dan hamburger menu memiliki ukuran lebih kecil di mobile untuk menghemat ruang.
 
 ## Performance Testing (k6)
+
+> **Catatan:** Folder `k6-tests/` ada di `.gitignore` dan tidak disertakan dalam repo publik. Script k6 di bawah ini untuk keperluan testing lokal pribadi saja. Jika kamu butuh script tersebut, bisa dibuat sendiri berdasarkan dokumentasi di `docs/k6-converter-test.md`.
 
 Folder `k6-tests/` berisi script k6 untuk menguji frontend secara otomatis. Diurutkan sesuai konsep K6:
 
