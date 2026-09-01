@@ -36,7 +36,7 @@ const steps = [
 export function HowItWorks() {
   useScrollReveal();
   return (
-    <section id="how-it-works" className="relative py-20 md:py-24">
+    <section id="how-it-works" className="relative overflow-hidden py-20 md:py-24">
       <div
         className="absolute left-1/3 top-20 h-75 w-75 rounded-full blur-3xl pointer-events-none"
         aria-hidden="true"

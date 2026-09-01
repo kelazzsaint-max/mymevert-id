@@ -39,7 +39,7 @@ const features = [
 export function Features() {
   useScrollReveal();
   return (
-    <section id="features" className="relative py-20 md:py-24">
+    <section id="features" className="relative overflow-hidden py-20 md:py-24">
       <div
         className="absolute left-1/2 top-0 h-100 w-150 -translate-x-1/2 rounded-full blur-3xl pointer-events-none"
         aria-hidden="true"

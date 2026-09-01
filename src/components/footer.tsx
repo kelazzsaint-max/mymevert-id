@@ -56,7 +56,7 @@ export function Footer() {
 
   return (
     <footer
-      className="relative"
+      className="relative overflow-hidden"
       style={{ borderTop: "1px solid var(--border-mid)", background: "var(--bg-surface)" }}
     >
       <div
