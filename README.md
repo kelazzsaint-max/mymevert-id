@@ -44,6 +44,12 @@ NEXT_PUBLIC_API_URL=https://stauroscopically-fluorescent-shelli.ngrok-free.dev
 - **Dynamic Import**: Komponen di bawah fold (`Features`, `HowItWorks`, `Platforms`, `WhyChoose`, `FAQ`) di-load via `next/dynamic` agar initial bundle lebih kecil.
 - **Cache-Control Header**: Static assets di-cache via `next.config.ts` dengan `max-age=31536000` untuk gambar dan `max-age=604800` untuk video.
 - **Polling Backoff**: Client polling status konversi menggunakan exponential backoff (1s → 2s → 4s → max 10s) untuk mengurangi request mubazir saat backend down.
+- **Lazy Load Modal**: Modal Privacy, Terms, dan Cookies di-import secara dynamic via `next/dynamic` supaya tidak ikut ke initial JS bundle.
+- **Video Autoplay Policy**: Video background menghormati setting `prefers-reduced-motion`, `Data Saver`, dan koneksi lambat (2G) — video tidak dimuat jika salah satu kondisi aktif.
+- **Aksesibilitas Zoom**: Viewport memungkinkan pinch-zoom (maximumScale: 5) untuk pengguna low-vision.
+- **Reduced Motion Global**: Semua animasi dihentikan via CSS media query `prefers-reduced-motion: reduce`.
+- **Performa Mobile**: Intensitas blur dikurangi di mobile (≤768px) untuk mengurangi beban GPU di perangkat low-end.
+- **Responsive Navbar**: Tombol toggle theme dan hamburger menu memiliki ukuran lebih kecil di mobile untuk menghemat ruang.
 
 ## Performance Testing (k6)
 
