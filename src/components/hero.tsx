@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useMemo } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { Play, Pause } from "lucide-react";
 import { ConverterInput } from "@/components/converter/converter-input";
@@ -10,13 +10,17 @@ export function Hero() {
   const [playing, setPlaying] = useState(true);
   const { resolvedTheme } = useTheme();
 
-  const shouldLoadVideo = useMemo(() => {
-    if (typeof window === "undefined") return true;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(true);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setShouldLoadVideo(false);
+      return;
+    }
     const conn = (navigator as any).connection;
-    if (conn?.saveData) return false;
-    if (conn?.effectiveType === "2g" || conn?.effectiveType === "slow-2g") return false;
-    return true;
+    if (conn?.saveData || conn?.effectiveType === "2g" || conn?.effectiveType === "slow-2g") {
+      setShouldLoadVideo(false);
+    }
   }, []);
 
   // Autoplay sekali saja saat mount, tanpa attribute autoPlay di <video>
