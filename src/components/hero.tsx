@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { useTheme } from "next-themes";
 import { Play, Pause } from "lucide-react";
 import { ConverterInput } from "@/components/converter/converter-input";
@@ -10,13 +10,22 @@ export function Hero() {
   const [playing, setPlaying] = useState(true);
   const { resolvedTheme } = useTheme();
 
+  const shouldLoadVideo = useMemo(() => {
+    if (typeof window === "undefined") return true;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
+    const conn = (navigator as any).connection;
+    if (conn?.saveData) return false;
+    if (conn?.effectiveType === "2g" || conn?.effectiveType === "slow-2g") return false;
+    return true;
+  }, []);
+
   // Autoplay sekali saja saat mount, tanpa attribute autoPlay di <video>
   // supaya tidak ter-trigger ulang otomatis tiap kali src berubah saat resize
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    if (!video || !shouldLoadVideo) return;
     video.play().catch(() => {});
-  }, []);
+  }, [shouldLoadVideo]);
 
   // Sinkronisasi state React dengan event native play/pause dari video element
   // Supaya tombol play/pause selalu menampilkan icon yang benar,
@@ -40,14 +49,14 @@ export function Hero() {
   // Ganti video berdasarkan ukuran layar
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    if (!video || !shouldLoadVideo) return;
 
     const updateVideoSource = () => {
       const isMobile = window.innerWidth < 768;
       const videoSource = isMobile ? "/bg-video-mobile.mp4" : "/bg-video.mp4";
-      
+
       if (video.src.includes(videoSource)) return;
-      
+
       const wasPlaying = !video.paused;
       video.src = videoSource;
       if (wasPlaying) {
@@ -59,13 +68,13 @@ export function Hero() {
 
     window.addEventListener('resize', updateVideoSource);
     return () => window.removeEventListener('resize', updateVideoSource);
-  }, []);
+  }, [shouldLoadVideo]);
 
   // Pause video saat keluar dari layar biar gak terus-terusan makan resource HP
   useEffect(() => {
     const video = videoRef.current;
     const section = document.getElementById("hero");
-    if (!video || !section) return;
+    if (!video || !section || !shouldLoadVideo) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -82,7 +91,7 @@ export function Hero() {
 
     observer.observe(section);
     return () => observer.disconnect();
-  }, []);
+  }, [shouldLoadVideo]);
 
   const togglePlay = () => {
     if (videoRef.current) {
@@ -122,29 +131,35 @@ export function Hero() {
       {/* Background Video */}
       <div className="absolute inset-0" aria-hidden="true">
         <div className="relative h-full w-full overflow-hidden">
-          <video
-            ref={videoRef}
-            loop
-            muted
-            playsInline
-            className="absolute inset-0 z-0 h-full w-full object-cover md:scale-130"
-          >
-            <source src="/bg-video.mp4" type="video/mp4" media="(min-width: 768px)" />
-            <source src="/bg-video-mobile.mp4" type="video/mp4" media="(max-width: 767px)" />
-          </video>
+          {shouldLoadVideo ? (
+            <video
+              ref={videoRef}
+              loop
+              muted
+              playsInline
+              className="absolute inset-0 z-0 h-full w-full object-cover md:scale-130"
+            >
+              <source src="/bg-video.mp4" type="video/mp4" media="(min-width: 768px)" />
+              <source src="/bg-video-mobile.mp4" type="video/mp4" media="(max-width: 767px)" />
+            </video>
+          ) : (
+            <div className="absolute inset-0 z-0 bg-[#0a0a0f]" />
+          )}
           <div className="absolute inset-0" style={{ background: overlayStyle }} />
         </div>
       </div>
 
       {/* Play/Pause button */}
-      <button
-        onClick={togglePlay}
-        className="absolute bottom-3 right-4 z-10 flex h-12 w-12 items-center justify-center rounded-full backdrop-blur-md transition-all duration-300 hover:scale-105 hover:shadow-lg"
-        style={buttonStyle}
-        aria-label={playing ? "Pause background video" : "Play background video"}
-      >
-        {playing ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
-      </button>
+      {shouldLoadVideo && (
+        <button
+          onClick={togglePlay}
+          className="absolute bottom-3 right-4 z-10 flex h-12 w-12 items-center justify-center rounded-full backdrop-blur-md transition-all duration-300 hover:scale-105 hover:shadow-lg"
+          style={buttonStyle}
+          aria-label={playing ? "Pause background video" : "Play background video"}
+        >
+          {playing ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
+        </button>
+      )}
 
       <div className="hero-content relative z-10 mx-auto max-w-5xl px-4 text-center">
         {/* Badge */}

@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { PrivacyModal } from "./privacy-modal";
-import { TermsModal } from "./terms-modal";
-import { CookiesModal } from "./cookies-modal";
+import dynamic from "next/dynamic";
+
+const PrivacyModal = dynamic(() => import("./privacy-modal").then((m) => m.PrivacyModal));
+const TermsModal = dynamic(() => import("./terms-modal").then((m) => m.TermsModal));
+const CookiesModal = dynamic(() => import("./cookies-modal").then((m) => m.CookiesModal));
 
 function GithubIcon({ className }: { className?: string }) {
   return (
