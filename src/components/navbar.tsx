@@ -126,10 +126,10 @@ export function Navbar() {
         </nav>
 
         {/* Right */}
-        <div className="flex items-center gap-2 ml-auto">
+        <div className="flex items-center gap-1 md:gap-2 ml-auto">
           <button
             onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-            className="relative flex h-10 w-20 items-center rounded-full p-1 transition-all duration-450 ease-in-out theme-toggle-pill"
+            className="relative flex h-8 w-16 md:h-10 md:w-20 items-center rounded-full p-1 transition-all duration-450 ease-in-out theme-toggle-pill"
             style={{
               background: resolvedTheme === "dark" ? "var(--bg-elevated)" : "var(--bg-elevated)",
               border: resolvedTheme === "dark" ? "1px solid rgba(255,255,255,0.15)" : "1px solid var(--border-mid)",
@@ -140,15 +140,15 @@ export function Navbar() {
           >
             {/* Knob */}
             <div
-              className="relative flex h-8 w-8 items-center justify-center rounded-full transition-all duration-450 ease-in-out theme-toggle-knob"
+              className="relative flex h-6 w-6 md:h-8 md:w-8 items-center justify-center rounded-full transition-all duration-450 ease-in-out theme-toggle-knob"
               style={{
                 background: resolvedTheme === "dark" ? "#0f172a" : "#ffffff",
-                transform: resolvedTheme === "dark" ? "translateX(40px)" : "translateX(0)",
+                transform: resolvedTheme === "dark" ? "translateX(var(--knob-translate))" : "translateX(0)",
                 boxShadow: resolvedTheme === "dark" ? "0 0 10px rgba(255,255,255,0.2)" : "0 0 10px var(--accent-blue)",
               }}
             >
               {!mounted ? (
-                <span className="h-4 w-4" />
+                <span className="h-3 w-3 md:h-4 md:w-4" />
               ) : (
                 <>
                   {/* Sun icon - light mode */}
@@ -160,7 +160,7 @@ export function Navbar() {
                       pointerEvents: resolvedTheme === "light" ? "auto" : "none",
                     }}
                   >
-                    <Sun className="h-4 w-4" style={{ color: "var(--accent-blue)" }} />
+                    <Sun className="h-3 w-3 md:h-4 md:w-4" style={{ color: "var(--accent-blue)" }} />
                   </div>
                   {/* Moon + Sparkles - dark mode */}
                   <div
@@ -172,9 +172,9 @@ export function Navbar() {
                     }}
                   >
                     <div className="relative flex items-center justify-center">
-                      <Moon className="h-4 w-4 text-white" />
-                      <Sparkles className="absolute -right-1 -top-1 h-2.5 w-2.5 text-white/80" />
-                      <Sparkles className="absolute -left-1 -bottom-0.5 h-2 w-2 text-white/60" />
+                      <Moon className="h-3 w-3 md:h-4 md:w-4 text-white" />
+                      <Sparkles className="absolute -right-1 -top-1 h-2 w-2 md:h-2.5 md:w-2.5 text-white/80" />
+                      <Sparkles className="absolute -left-1 -bottom-0.5 h-1.5 w-1.5 md:h-2 md:w-2 text-white/60" />
                     </div>
                   </div>
                 </>
