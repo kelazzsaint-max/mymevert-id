@@ -126,7 +126,7 @@ export function Navbar() {
         </nav>
 
         {/* Right */}
-        <div className="flex items-center gap-1 md:gap-2 ml-auto">
+        <div className="flex items-center gap-2 md:gap-3 ml-auto">
           <button
             onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
             className="relative flex h-8 w-16 md:h-10 md:w-20 items-center rounded-full p-1 transition-all duration-450 ease-in-out theme-toggle-pill"
