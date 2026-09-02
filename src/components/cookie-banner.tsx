@@ -87,6 +87,7 @@ function CookieSettingsModal({ onClose, onSave }: { onClose: () => void; onSave:
 export function CookieBanner() {
   const [visible, setVisible] = useState(false);
   const [hiding, setHiding] = useState(false);
+  const [entering, setEntering] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -104,12 +105,16 @@ export function CookieBanner() {
           localStorage.removeItem("cookie-consent");
           localStorage.removeItem("cookie-last-accept");
           setVisible(true);
+          setEntering(true);
+          setTimeout(() => setEntering(false), 50);
           return;
         }
       }
 
       if (!consent || consent === "declined") {
         setVisible(true);
+        setEntering(true);
+        setTimeout(() => setEntering(false), 50);
         return;
       }
 
@@ -153,8 +158,12 @@ export function CookieBanner() {
       <div
         className="fixed bottom-0 left-0 right-0 z-50 px-4 pb-4 md:px-6 md:pb-6 lg:px-8 lg:pb-8"
         style={{
-          opacity: hiding ? 0 : 1,
-          transform: hiding ? "translateY(20px)" : "translateY(0)",
+          opacity: hiding ? 0 : entering ? 0 : 1,
+          transform: hiding
+            ? "translateY(20px)"
+            : entering
+              ? "translateY(20px)"
+              : "translateY(0)",
           transition: "opacity 0.4s ease, transform 0.4s ease",
         }}
       >

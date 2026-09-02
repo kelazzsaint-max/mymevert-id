@@ -1,52 +1,96 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AlertTriangle, X } from "lucide-react";
 
 const WHATSAPP_URL =
   "https://wa.me/6283184280657?text=Halo%2C%20saya%20lihat%20fitur%20convert%20di%20MYMevert.id%20sedang%20tidak%20aktif%2C%20kapan%20bisa%20dipakai%20lagi%20ya%3F";
 
 const DISMISS_KEY = "backend-status-dismissed";
+const COOLDOWN_MS = 10 * 60 * 1000;
+const POLL_INTERVAL_MS = 60 * 1000;
+const FETCH_TIMEOUT_MS = 5000;
+
+function checkDismissCooldown(): boolean {
+  const dismissedAt = sessionStorage.getItem(DISMISS_KEY);
+  if (!dismissedAt) return false;
+  const elapsed = Date.now() - parseInt(dismissedAt, 10);
+  if (elapsed >= COOLDOWN_MS) {
+    sessionStorage.removeItem(DISMISS_KEY);
+    return false;
+  }
+  return true;
+}
 
 export function BackendStatusBanner() {
   const [visible, setVisible] = useState(false);
   const [hiding, setHiding] = useState(false);
+  const [entering, setEntering] = useState(false);
+  const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    const dismissed = sessionStorage.getItem(DISMISS_KEY);
-    if (dismissed === "true") return;
-
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 5000);
-
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    if (!apiUrl) {
-      setVisible(true);
-      return;
+    if (hideTimer.current) {
+      clearTimeout(hideTimer.current);
+      hideTimer.current = null;
     }
 
-    fetch(`${apiUrl}/health`, { signal: controller.signal })
-      .then(async (res) => {
-        if (!res.ok) throw new Error("not ok");
-        const data = await res.json();
-        if (data.status !== "healthy") throw new Error("not healthy");
-        setVisible(false);
-      })
-      .catch(() => {
-        setVisible(true);
-      })
-      .finally(() => clearTimeout(timeout));
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+    const runCheck = () => {
+      if (checkDismissCooldown()) return;
+
+      if (!apiUrl) {
+        showBanner();
+        return;
+      }
+
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+
+      fetch(`${apiUrl}/health`, { signal: controller.signal })
+        .then(async (res) => {
+          if (!res.ok) throw new Error("not ok");
+          const data = await res.json();
+          if (data.status !== "healthy") throw new Error("not healthy");
+          sessionStorage.removeItem(DISMISS_KEY);
+          hideBanner();
+        })
+        .catch(() => {
+          showBanner();
+        })
+        .finally(() => clearTimeout(timeout));
+    };
+
+    const showBanner = () => {
+      setVisible(true);
+      setEntering(true);
+      setTimeout(() => setEntering(false), 50);
+    };
+
+    const hideBanner = () => {
+      if (visible) {
+        setHiding(true);
+        hideTimer.current = setTimeout(() => {
+          setVisible(false);
+          setHiding(false);
+          hideTimer.current = null;
+        }, 400);
+      }
+    };
+
+    runCheck();
+    const interval = setInterval(runCheck, POLL_INTERVAL_MS);
 
     return () => {
-      clearTimeout(timeout);
-      controller.abort();
+      clearInterval(interval);
+      if (hideTimer.current) clearTimeout(hideTimer.current);
     };
   }, []);
 
   const dismiss = () => {
+    sessionStorage.setItem(DISMISS_KEY, Date.now().toString());
     setHiding(true);
     setTimeout(() => {
-      sessionStorage.setItem(DISMISS_KEY, "true");
       setVisible(false);
       setHiding(false);
     }, 400);
@@ -58,8 +102,12 @@ export function BackendStatusBanner() {
     <div
       className="fixed bottom-0 left-0 right-0 z-[60] px-4 pb-4 md:px-6 md:pb-6 lg:px-8 lg:pb-8"
       style={{
-        opacity: hiding ? 0 : 1,
-        transform: hiding ? "translateY(20px)" : "translateY(0)",
+        opacity: hiding ? 0 : entering ? 0 : 1,
+        transform: hiding
+          ? "translateY(20px)"
+          : entering
+            ? "translateY(20px)"
+            : "translateY(0)",
         transition: "opacity 0.4s ease, transform 0.4s ease",
       }}
     >
@@ -86,7 +134,7 @@ export function BackendStatusBanner() {
                   fontFamily: "var(--font-display)",
                 }}
               >
-                Layanan Convert Tidak Aktif
+                Converter Unavailable
               </p>
               <p className="text-xs" style={{ color: "var(--text-secondary)" }}>
                 mymevert.id
@@ -105,9 +153,9 @@ export function BackendStatusBanner() {
 
         <div className="flex flex-col md:flex-row md:items-center md:gap-6">
           <p className="text-sm leading-relaxed mb-4 md:mb-0 md:flex-1 text-gray-300">
-            Layanan convert sedang tidak aktif saat ini. Kamu tetap bisa
-            lihat-lihat halaman ini, tapi fitur convert belum bisa dipakai.
-            Hubungi kami di WhatsApp untuk info kapan aktif lagi.
+            Our converter service is temporarily offline. You can still browse
+            the site, but conversions aren&apos;t available right now. Message
+            us on WhatsApp for updates.
           </p>
 
           <div className="flex items-center gap-2 shrink-0">
@@ -133,7 +181,7 @@ export function BackendStatusBanner() {
                 fontFamily: "var(--font-display)",
               }}
             >
-              Tutup
+              Close
             </button>
           </div>
         </div>
