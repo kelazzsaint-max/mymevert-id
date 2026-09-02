@@ -11,6 +11,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 import { CookieBanner } from "@/components/cookie-banner";
+import { BackendStatusBanner } from "@/components/backend-status-banner";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -101,6 +102,7 @@ export default function RootLayout({
             <RevealObserver />
             {children}
             <Footer/>
+            <BackendStatusBanner />
             <ScrollToTopButton />
             <Toaster richColors />
             <CookieBanner />
