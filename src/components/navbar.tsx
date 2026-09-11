@@ -1,13 +1,13 @@
 "use client";
-import { useState, useEffect, useCallback, useSyncExternalStore } from "react";
+import {
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  useSyncExternalStore,
+} from "react";
 import { Menu, X, Sun, Moon, Sparkles } from "lucide-react";
 import { useTheme } from "next-themes";
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-  SheetTitle,
-} from "@/components/ui/sheet";
 
 const navLinks = [
   { href: "#hero", label: "Home" },
@@ -21,10 +21,15 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const [scrolled, setScrolled] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const mounted = useSyncExternalStore(
-    (cb) => { window.addEventListener("mounted", cb); return () => window.removeEventListener("mounted", cb); },
+    (cb) => {
+      window.addEventListener("mounted", cb);
+      return () => window.removeEventListener("mounted", cb);
+    },
     () => true,
-    () => false
+    () => false,
   );
 
   const { resolvedTheme, setTheme } = useTheme();
@@ -73,6 +78,36 @@ export function Navbar() {
     el?.scrollIntoView();
   };
 
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeydown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeydown);
+    return () => window.removeEventListener("keydown", handleKeydown);
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handlePointerDown = (event: MouseEvent) => {
+      const target = event.target as Node;
+      const isInsideMenu = menuRef.current?.contains(target);
+      const isInsideButton = menuButtonRef.current?.contains(target);
+
+      if (!isInsideMenu && !isInsideButton) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handlePointerDown);
+    return () => document.removeEventListener("mousedown", handlePointerDown);
+  }, [isOpen]);
+
   return (
     <header
       suppressHydrationWarning
@@ -97,15 +132,25 @@ export function Navbar() {
             <div className="relative h-9 w-9">
               <div className="absolute inset-0 rounded-lg bg-linear-to-br from-accent-blue to-accent-magenta opacity-30 blur-sm" />
               <div className="relative flex h-full w-full items-center justify-center rounded-lg bg-linear-to-br from-accent-blue to-accent-magenta">
-                <span className="font-display text-base font-800 text-white">M</span>
+                <span className="font-display text-base font-800 text-white">
+                  M
+                </span>
               </div>
             </div>
-            <span className="text-xl font-bold gradient-text" style={{ fontFamily: "var(--font-display)" }}>MYMevert.id</span>
+            <span
+              className="text-xl font-bold gradient-text"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              MYMevert.id
+            </span>
           </a>
         </div>
 
         {/* Center nav */}
-        <nav className="hidden md:flex gap-1 mx-auto" aria-label="Main navigation">
+        <nav
+          className="hidden md:flex gap-1 mx-auto"
+          aria-label="Main navigation"
+        >
           {navLinks.map((link) => {
             const isActive = activeSection === link.href.replace("#", "");
             return (
@@ -113,10 +158,16 @@ export function Navbar() {
                 key={link.href}
                 onClick={() => handleLinkClick(link.href)}
                 className={`relative px-4 py-2 text-sm font-medium transition-all duration-200 rounded-lg ${
-                  isActive ? "text-text-primary bg-bg-elevated" : "text-text-secondary hover:text-text-primary hover:bg-bg-elevated"
+                  isActive
+                    ? "text-text-primary bg-bg-elevated"
+                    : "text-text-secondary hover:text-text-primary hover:bg-bg-elevated"
                 }`}
                 aria-current={isActive ? "page" : undefined}
-                style={{ fontFamily: "var(--font-display)", fontSize: "13px", letterSpacing: "0.02em" }}
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "13px",
+                  letterSpacing: "0.02em",
+                }}
               >
                 {link.label}
                 {isActive && <span className="nav-active-dot" />}
@@ -128,12 +179,23 @@ export function Navbar() {
         {/* Right */}
         <div className="flex items-center gap-2 md:gap-3 ml-auto">
           <button
-            onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+            onClick={() =>
+              setTheme(resolvedTheme === "dark" ? "light" : "dark")
+            }
             className="relative flex h-8 w-16 md:h-10 md:w-20 items-center rounded-full p-1 transition-all duration-450 ease-in-out theme-toggle-pill"
             style={{
-              background: resolvedTheme === "dark" ? "var(--bg-elevated)" : "var(--bg-elevated)",
-              border: resolvedTheme === "dark" ? "1px solid rgba(255,255,255,0.15)" : "1px solid var(--border-mid)",
-              boxShadow: resolvedTheme === "dark" ? "0 0 0 1px rgba(255,255,255,0.08) inset" : "none",
+              background:
+                resolvedTheme === "dark"
+                  ? "var(--bg-elevated)"
+                  : "var(--bg-elevated)",
+              border:
+                resolvedTheme === "dark"
+                  ? "1px solid rgba(255,255,255,0.15)"
+                  : "1px solid var(--border-mid)",
+              boxShadow:
+                resolvedTheme === "dark"
+                  ? "0 0 0 1px rgba(255,255,255,0.08) inset"
+                  : "none",
             }}
             aria-label="Toggle theme"
             suppressHydrationWarning
@@ -143,8 +205,14 @@ export function Navbar() {
               className="relative flex h-6 w-6 md:h-8 md:w-8 items-center justify-center rounded-full transition-all duration-450 ease-in-out theme-toggle-knob"
               style={{
                 background: resolvedTheme === "dark" ? "#0f172a" : "#ffffff",
-                transform: resolvedTheme === "dark" ? "translateX(var(--knob-translate))" : "translateX(0)",
-                boxShadow: resolvedTheme === "dark" ? "0 0 10px rgba(255,255,255,0.2)" : "0 0 10px var(--accent-blue)",
+                transform:
+                  resolvedTheme === "dark"
+                    ? "translateX(var(--knob-translate))"
+                    : "translateX(0)",
+                boxShadow:
+                  resolvedTheme === "dark"
+                    ? "0 0 10px rgba(255,255,255,0.2)"
+                    : "0 0 10px var(--accent-blue)",
               }}
             >
               {!mounted ? (
@@ -156,18 +224,28 @@ export function Navbar() {
                     className="absolute inset-0 flex items-center justify-center transition-all duration-350 ease-in-out theme-toggle-icon"
                     style={{
                       opacity: resolvedTheme === "light" ? 1 : 0,
-                      transform: resolvedTheme === "light" ? "scale(1) rotate(0deg)" : "scale(0.5) rotate(-45deg)",
-                      pointerEvents: resolvedTheme === "light" ? "auto" : "none",
+                      transform:
+                        resolvedTheme === "light"
+                          ? "scale(1) rotate(0deg)"
+                          : "scale(0.5) rotate(-45deg)",
+                      pointerEvents:
+                        resolvedTheme === "light" ? "auto" : "none",
                     }}
                   >
-                    <Sun className="h-3 w-3 md:h-4 md:w-4" style={{ color: "var(--accent-blue)" }} />
+                    <Sun
+                      className="h-3 w-3 md:h-4 md:w-4"
+                      style={{ color: "var(--accent-blue)" }}
+                    />
                   </div>
                   {/* Moon + Sparkles - dark mode */}
                   <div
                     className="absolute inset-0 flex items-center justify-center transition-all duration-350 ease-in-out theme-toggle-icon"
                     style={{
                       opacity: resolvedTheme === "dark" ? 1 : 0,
-                      transform: resolvedTheme === "dark" ? "scale(1) rotate(0deg)" : "scale(0.5) rotate(45deg)",
+                      transform:
+                        resolvedTheme === "dark"
+                          ? "scale(1) rotate(0deg)"
+                          : "scale(0.5) rotate(45deg)",
                       pointerEvents: resolvedTheme === "dark" ? "auto" : "none",
                     }}
                   >
@@ -182,28 +260,47 @@ export function Navbar() {
             </div>
           </button>
 
-          <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger asChild>
-              <button className="md:hidden flex h-9 w-9 items-center justify-center rounded-lg border border-border-mid text-text-secondary" aria-label={isOpen ? "Close menu" : "Open menu"}>
-                {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-              </button>
-            </SheetTrigger>
-            <SheetContent
-              side="right"
-              className="w-72 p-0"
-              aria-describedby={undefined}
-              style={{ background: "var(--nav-bg)", backdropFilter: "blur(12px)", borderLeft: "1px solid var(--border-mid)" }}
+          <div className="relative md:hidden">
+            <button
+              ref={menuButtonRef}
+              className="flex h-9 w-9 items-center justify-center rounded-lg border border-border-mid text-text-secondary"
+              aria-label={isOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isOpen}
+              onClick={() => setIsOpen((value) => !value)}
             >
-              <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-              <nav className="flex flex-col gap-1 px-4 py-6 mt-6" aria-label="Mobile navigation">
+              {isOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
+            </button>
+
+            <div
+              ref={menuRef}
+              aria-hidden={!isOpen}
+              inert={!isOpen}
+              className={`absolute right-0 top-full z-50 mt-2 w-72 overflow-hidden rounded-2xl border border-border-mid bg-nav-bg/95 p-3 shadow-2xl backdrop-blur-md transition-all duration-200 ${
+                isOpen
+                  ? "visible translate-y-0 opacity-100"
+                  : "invisible translate-y-1 opacity-0 pointer-events-none"
+              }`}
+            >
+              <nav
+                className="flex flex-col gap-1"
+                aria-label="Mobile navigation"
+              >
                 {navLinks.map((link) => (
                   <button
                     key={link.href}
                     onClick={() => handleMobileLinkClick(link.href)}
                     className={`rounded-lg px-4 py-3 text-sm font-medium transition text-left ${
-                      activeSection === link.href.replace("#", "") ? "bg-bg-elevated text-text-primary" : "text-text-secondary hover:bg-bg-elevated hover:text-text-primary"
+                      activeSection === link.href.replace("#", "")
+                        ? "bg-bg-elevated text-text-primary"
+                        : "text-text-secondary hover:bg-bg-elevated hover:text-text-primary"
                     }`}
-                  >{link.label}</button>
+                  >
+                    {link.label}
+                  </button>
                 ))}
                 <a
                   href="#converter"
@@ -213,11 +310,16 @@ export function Navbar() {
                     handleMobileLinkClick("#converter");
                   }}
                   className="glow-btn mt-2 rounded-lg px-4 py-3 text-center text-sm font-semibold text-white"
-                  style={{ background: "var(--grad-primary)", boxShadow: "var(--glow-blue)" }}
-                >Start Converting</a>
+                  style={{
+                    background: "var(--grad-primary)",
+                    boxShadow: "var(--glow-blue)",
+                  }}
+                >
+                  Start Converting
+                </a>
               </nav>
-            </SheetContent>
-          </Sheet>
+            </div>
+          </div>
         </div>
       </div>
     </header>

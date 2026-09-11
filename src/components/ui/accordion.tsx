@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Accordion as AccordionPrimitive } from "radix-ui"
+import * as React from "react";
+import { Accordion as AccordionPrimitive } from "radix-ui";
 
-import { cn } from "@/lib/utils"
-import { ChevronDownIcon } from "lucide-react"
+import { cn } from "@/lib/utils";
+import { ChevronDownIcon } from "lucide-react";
 
 function Accordion({
   className,
@@ -16,7 +16,7 @@ function Accordion({
       className={cn("flex w-full flex-col", className)}
       {...props}
     />
-  )
+  );
 }
 
 function AccordionItem({
@@ -29,7 +29,7 @@ function AccordionItem({
       className={cn(className)}
       {...props}
     />
-  )
+  );
 }
 
 function AccordionTrigger({
@@ -43,18 +43,18 @@ function AccordionTrigger({
         data-slot="accordion-trigger"
         className={cn(
           "group/accordion-trigger relative flex flex-1 items-center justify-between rounded-lg py-2.5 text-left text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50",
-          className
+          className,
         )}
         {...props}
       >
         {children}
-        <ChevronDownIcon 
-          data-slot="accordion-trigger-icon" 
-          className="pointer-events-none shrink-0 size-4 transition-transform duration-200 group-data-[state=open]/accordion-trigger:rotate-180" 
+        <ChevronDownIcon
+          data-slot="accordion-trigger-icon"
+          className="pointer-events-none shrink-0 size-4 transition-transform duration-200 group-data-[state=open]/accordion-trigger:rotate-180"
         />
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
-  )
+  );
 }
 
 function AccordionContent({
@@ -65,14 +65,14 @@ function AccordionContent({
   return (
     <AccordionPrimitive.Content
       data-slot="accordion-content"
-      className="overflow-hidden text-sm data-[state=closed]:hidden"
+      className="grid text-sm transition-[grid-template-rows] duration-300 ease-out data-[state=closed]:grid-rows-[0fr] data-[state=open]:grid-rows-[1fr]"
       {...props}
     >
-      <div className={cn("pt-0 pb-2.5", className)}>
-        {children}
+      <div className="overflow-hidden">
+        <div className={cn("pt-0 pb-2.5", className)}>{children}</div>
       </div>
     </AccordionPrimitive.Content>
-  )
+  );
 }
 
-export { Accordion, AccordionItem, AccordionTrigger, AccordionContent }
+export { Accordion, AccordionItem, AccordionTrigger, AccordionContent };

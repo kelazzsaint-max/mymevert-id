@@ -6,27 +6,20 @@ import { AlertTriangle, X } from "lucide-react";
 const WHATSAPP_URL =
   "https://wa.me/6283184280657?text=Halo%2C%20saya%20lihat%20fitur%20convert%20di%20MYMevert.id%20sedang%20tidak%20aktif%2C%20kapan%20bisa%20dipakai%20lagi%20ya%3F";
 
-const DISMISS_KEY = "backend-status-dismissed";
-const COOLDOWN_MS = 10 * 60 * 1000;
 const POLL_INTERVAL_MS = 60 * 1000;
 const FETCH_TIMEOUT_MS = 5000;
-
-function checkDismissCooldown(): boolean {
-  const dismissedAt = sessionStorage.getItem(DISMISS_KEY);
-  if (!dismissedAt) return false;
-  const elapsed = Date.now() - parseInt(dismissedAt, 10);
-  if (elapsed >= COOLDOWN_MS) {
-    sessionStorage.removeItem(DISMISS_KEY);
-    return false;
-  }
-  return true;
-}
 
 export function BackendStatusBanner() {
   const [visible, setVisible] = useState(false);
   const [hiding, setHiding] = useState(false);
   const [entering, setEntering] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
+  const dismissedRef = useRef(false);
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    dismissedRef.current = dismissed;
+  }, [dismissed]);
 
   useEffect(() => {
     if (hideTimer.current) {
@@ -36,9 +29,25 @@ export function BackendStatusBanner() {
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-    const runCheck = () => {
-      if (checkDismissCooldown()) return;
+    const showBanner = () => {
+      if (dismissedRef.current) return;
+      setVisible(true);
+      setEntering(true);
+      setTimeout(() => setEntering(false), 50);
+    };
 
+    const hideBanner = () => {
+      setDismissed(false);
+      dismissedRef.current = false;
+      setHiding(true);
+      hideTimer.current = setTimeout(() => {
+        setVisible(false);
+        setHiding(false);
+        hideTimer.current = null;
+      }, 400);
+    };
+
+    const runCheck = () => {
       if (!apiUrl) {
         showBanner();
         return;
@@ -52,30 +61,12 @@ export function BackendStatusBanner() {
           if (!res.ok) throw new Error("not ok");
           const data = await res.json();
           if (data.status !== "healthy") throw new Error("not healthy");
-          sessionStorage.removeItem(DISMISS_KEY);
           hideBanner();
         })
         .catch(() => {
           showBanner();
         })
         .finally(() => clearTimeout(timeout));
-    };
-
-    const showBanner = () => {
-      setVisible(true);
-      setEntering(true);
-      setTimeout(() => setEntering(false), 50);
-    };
-
-    const hideBanner = () => {
-      if (visible) {
-        setHiding(true);
-        hideTimer.current = setTimeout(() => {
-          setVisible(false);
-          setHiding(false);
-          hideTimer.current = null;
-        }, 400);
-      }
     };
 
     runCheck();
@@ -88,7 +79,8 @@ export function BackendStatusBanner() {
   }, []);
 
   const dismiss = () => {
-    sessionStorage.setItem(DISMISS_KEY, Date.now().toString());
+    setDismissed(true);
+    dismissedRef.current = true;
     setHiding(true);
     setTimeout(() => {
       setVisible(false);
@@ -100,7 +92,7 @@ export function BackendStatusBanner() {
 
   return (
     <div
-      className="fixed bottom-0 left-0 right-0 z-[60] px-4 pb-4 md:px-6 md:pb-6 lg:px-8 lg:pb-8"
+      className="fixed bottom-0 left-0 right-0 z-60 px-4 pb-4 md:px-6 md:pb-6 lg:px-8 lg:pb-8"
       style={{
         opacity: hiding ? 0 : entering ? 0 : 1,
         transform: hiding
@@ -158,14 +150,13 @@ export function BackendStatusBanner() {
             us on WhatsApp for updates.
           </p>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex flex-col md:flex-row items-stretch md:items-center gap-2 shrink-0">
             <a
               href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="glow-btn flex-1 md:flex-none rounded-xl py-2.5 px-6 text-sm font-semibold text-white"
+              className="glow-btn flex w-full items-center justify-center rounded-xl border border-cyan-400/30 bg-linear-to-r from-cyan-500 to-blue-500 px-5 py-2.5 text-sm font-semibold text-white text-center transition-all duration-150 hover:translate-y-[-1px] hover:shadow-lg hover:shadow-cyan-500/25 active:translate-y-[0px] active:scale-[0.99] md:w-auto md:min-w-[170px]"
               style={{
-                background: "var(--grad-primary)",
                 fontFamily: "var(--font-display)",
               }}
             >
@@ -173,11 +164,8 @@ export function BackendStatusBanner() {
             </a>
             <button
               onClick={dismiss}
-              className="flex items-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-medium transition-all"
+              className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-gray-600 bg-gray-800 px-4 py-2.5 text-sm font-semibold text-gray-100 transition-all duration-150 hover:border-gray-500 hover:bg-gray-700 hover:translate-y-[-1px] hover:shadow-md hover:shadow-black/20 active:translate-y-[0px] active:scale-[0.99] md:w-auto md:min-w-[120px]"
               style={{
-                background: "var(--bg-elevated)",
-                border: "1px solid var(--border-mid)",
-                color: "var(--text-secondary)",
                 fontFamily: "var(--font-display)",
               }}
             >

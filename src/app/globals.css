@@ -206,11 +206,15 @@
 /* ═══════════════════════════════════════════════════════
    BASE STYLES
    ═══════════════════════════════════════════════════════ */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-* { scroll-behavior: smooth; }
+* {
+  scroll-behavior: smooth;
+}
 
 html {
   background: var(--bg-base);
@@ -223,7 +227,9 @@ body {
   color: var(--text-primary);
   font-family: var(--font-body), Arial, Helvetica, sans-serif;
   overflow-x: hidden;
-  transition: background 250ms ease, color 250ms ease;
+  transition:
+    background 250ms ease,
+    color 250ms ease;
   min-height: 100vh;
 }
 
@@ -232,25 +238,47 @@ body {
   color: #ffffff;
 }
 
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--scroll-track); }
-::-webkit-scrollbar-thumb { background: var(--scroll-thumb); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--accent-magenta); }
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--scroll-track);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scroll-thumb);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-magenta);
+}
 
 /* ═══════════════════════════════════════════════════════
    TYPOGRAPHY
    ═══════════════════════════════════════════════════════ */
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-family: var(--font-display);
   color: var(--text-primary);
 }
 
-h5, h6 {
+h5,
+h6 {
   font-family: var(--font-display);
   color: var(--text-primary);
 }
 
-p, span, div, li, a, button, label, input, select, textarea {
+p,
+span,
+div,
+li,
+a,
+button,
+label,
+input,
+select,
+textarea {
   color: var(--text-primary);
 }
 
@@ -267,31 +295,61 @@ p, span, div, li, a, button, label, input, select, textarea {
    ═══════════════════════════════════════════════════════ */
 
 @keyframes gradient-shift {
-   0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @keyframes shimmer {
-  0%   { background-position: -200% 0; }
-  100% { background-position:  200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 @keyframes scan-line {
-  0%   { transform: translateY(-100%); opacity: 0; }
-  10%  { opacity: 0.4; }
-  90%  { opacity: 0.4; }
-  100% { transform: translateY(100vh); opacity: 0; }
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.4;
+  }
+  90% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
 }
 
 @keyframes border-rotate {
-  0%   { --angle: 0deg; }
-  100% { --angle: 360deg; }
+  0% {
+    --angle: 0deg;
+  }
+  100% {
+    --angle: 360deg;
+  }
 }
 
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -335,7 +393,9 @@ p, span, div, li, a, button, label, input, select, textarea {
 .reveal {
   opacity: 0;
   transform: translateY(24px);
-  transition: opacity 0.65s ease-out, transform 0.65s ease-out;
+  transition:
+    opacity 0.65s ease-out,
+    transform 0.65s ease-out;
 }
 .reveal.visible {
   opacity: 1;
@@ -349,7 +409,9 @@ p, span, div, li, a, button, label, input, select, textarea {
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--border-mid);
   box-shadow: var(--shadow-card);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .glass-card:hover {
@@ -369,8 +431,12 @@ p, span, div, li, a, button, label, input, select, textarea {
   inset: -1px;
   border-radius: inherit;
   background: var(--grad-primary);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask:         linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   opacity: 0.5;
@@ -386,7 +452,9 @@ p, span, div, li, a, button, label, input, select, textarea {
 .glow-btn {
   position: relative;
   overflow: hidden;
-  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.3s ease;
   font-family: var(--font-display);
   letter-spacing: 0.04em;
 }
@@ -400,10 +468,20 @@ p, span, div, li, a, button, label, input, select, textarea {
   transition: opacity 0.2s ease;
 }
 
-.glow-btn:hover::after { opacity: 1; }
-.glow-btn:hover { transform: translateY(-2px); }
-.glow-btn:active { transform: translateY(0); }
-.glow-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none !important; }
+.glow-btn:hover::after {
+  opacity: 1;
+}
+.glow-btn:hover {
+  transform: translateY(-2px);
+}
+.glow-btn:active {
+  transform: translateY(0);
+}
+.glow-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none !important;
+}
 
 /* ── Accent line decoration ─────────────────────────── */
 .accent-line {
@@ -422,7 +500,9 @@ p, span, div, li, a, button, label, input, select, textarea {
   transform-origin: left;
   transition: transform 0.3s ease;
 }
-.accent-line:hover::after { transform: scaleX(1); }
+.accent-line:hover::after {
+  transform: scaleX(1);
+}
 
 /* ── Corner bracket decoration ──────────────────────── */
 .corner-bracket {
@@ -440,12 +520,14 @@ p, span, div, li, a, button, label, input, select, textarea {
   opacity: 0.6;
 }
 .corner-bracket::before {
-  top: -1px; left: -1px;
+  top: -1px;
+  left: -1px;
   border-width: 2px 0 0 2px;
   border-radius: 2px 0 0 0;
 }
 .corner-bracket::after {
-  bottom: -1px; right: -1px;
+  bottom: -1px;
+  right: -1px;
   border-width: 0 2px 2px 0;
   border-radius: 0 0 2px 0;
 }
@@ -482,14 +564,16 @@ p, span, div, li, a, button, label, input, select, textarea {
 }
 
 /* Input focus ring */
-input:focus, select:focus, textarea:focus {
+input:focus,
+select:focus,
+textarea:focus {
   outline: none;
 }
 
 /* ── Cegah zoom otomatis di mobile ──────────────────── */
-input, 
-select, 
-textarea, 
+input,
+select,
+textarea,
 button {
   font-size: 16px;
 }
@@ -546,7 +630,7 @@ button {
 .light #hero .text-secondary,
 .light .hero-content .text-muted,
 .light .hero-content .text-secondary {
-  color: #94a3b8;  /* SAMA SEPERTI DARK MODE - abu-abu terang */
+  color: #94a3b8; /* SAMA SEPERTI DARK MODE - abu-abu terang */
 }
 
 /* Badge di hero - light mode */
@@ -678,17 +762,16 @@ select {
   color: var(--text-primary) !important;
 }
 
-/* ═══════════════════════════════════════════════════════
-   ACCORDION STYLES + MOBILE PERFORMANCE FIX
-   ═══════════════════════════════════════════════════════ */
 [data-slot="accordion-item"] {
   background: var(--card-bg) !important;
   border: 1px solid var(--border-mid) !important;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease !important;
 }
 
 [data-slot="accordion-item"][data-state="open"] {
-  border: 1px solid rgba(61,139,255,0.35) !important;
+  border: 1px solid rgba(61, 139, 255, 0.35) !important;
   box-shadow: 0 0 20px rgba(59, 130, 246, 0.25) !important;
 }
 
@@ -711,28 +794,6 @@ select {
 
 [data-slot="accordion-trigger"][data-state="open"] svg {
   color: var(--accent-blue) !important;
-}
-
-/* Desktop: GPU accelerated animation (tetap ada) */
-@media (min-width: 769px) {
-  [data-slot="accordion-content"] {
-    will-change: height, opacity;
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-  }
-}
-
-/* Mobile & Portrait: HAPUS semua animasi height - langsung show/hide */
-@media (max-width: 768px), (orientation: portrait) {
-  [data-slot="accordion-content"] {
-    transition: none !important;
-    animation: none !important;
-    will-change: auto !important;
-    transform: none !important;
-    backface-visibility: unset !important;
-    -webkit-backface-visibility: unset !important;
-  }
 }
 
 /* ── Progress ───────────────────────────────────────── */
@@ -780,7 +841,9 @@ select {
   .animate-gradient {
     animation: none !important;
   }
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;

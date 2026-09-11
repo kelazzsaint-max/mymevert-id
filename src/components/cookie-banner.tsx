@@ -8,14 +8,49 @@ type CookiePreferences = {
   analytics: boolean;
 };
 
-function CookieSettingsModal({ onClose, onSave }: { onClose: () => void; onSave: (settings: CookiePreferences) => void }) {
+function CookieSettingsModal({
+  onClose,
+  onSave,
+}: {
+  onClose: () => void;
+  onSave: (settings: CookiePreferences) => void;
+}) {
   const [analytics, setAnalytics] = useState(false);
+  const [hiding, setHiding] = useState(false);
+  const [entering, setEntering] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setEntering(false), 50);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const requestClose = () => {
+    if (hiding) return;
+    setHiding(true);
+    setTimeout(() => onClose(), 250);
+  };
+
+  const requestSave = () => {
+    if (hiding) return;
+    setHiding(true);
+    setTimeout(() => {
+      onSave({ necessary: true, analytics });
+      onClose();
+    }, 250);
+  };
 
   return (
     <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-      <div className="relative mx-4 w-full max-w-md rounded-2xl bg-gray-900 p-6 shadow-2xl border border-gray-700">
+      <div
+        className="relative mx-4 w-full max-w-md rounded-2xl bg-gray-900 p-6 shadow-2xl border border-gray-700"
+        style={{
+          opacity: hiding ? 0 : entering ? 0 : 1,
+          transform: hiding || entering ? "scale(0.95)" : "scale(1)",
+          transition: "opacity 0.25s ease-out, transform 0.25s ease-out",
+        }}
+      >
         <button
-          onClick={onClose}
+          onClick={requestClose}
           className="absolute right-4 top-4 text-gray-400 hover:text-white transition"
         >
           <X className="h-5 w-5" />
@@ -25,13 +60,17 @@ function CookieSettingsModal({ onClose, onSave }: { onClose: () => void; onSave:
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-500/20 border border-cyan-500/40">
             <Shield className="h-5 w-5 text-cyan-400" />
           </div>
-          <h3 className="text-xl font-bold text-white" style={{ fontFamily: "var(--font-display)" }}>
+          <h3
+            className="text-xl font-bold text-white"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
             Cookie Preferences
           </h3>
         </div>
 
         <p className="mb-6 text-sm text-gray-300">
-          Customize your cookie preferences. Necessary cookies are always enabled.
+          Customize your cookie preferences. Necessary cookies are always
+          enabled.
         </p>
 
         <div className="space-y-4">
@@ -40,9 +79,13 @@ function CookieSettingsModal({ onClose, onSave }: { onClose: () => void; onSave:
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-semibold text-white">Necessary Cookies</p>
-                <p className="text-xs text-gray-400">Required for basic site functionality</p>
+                <p className="text-xs text-gray-400">
+                  Required for basic site functionality
+                </p>
               </div>
-              <span className="rounded-full bg-green-500/20 px-3 py-1 text-xs text-green-400">Always On</span>
+              <span className="rounded-full bg-green-500/20 px-3 py-1 text-xs text-green-400">
+                Always On
+              </span>
             </div>
           </div>
 
@@ -51,30 +94,32 @@ function CookieSettingsModal({ onClose, onSave }: { onClose: () => void; onSave:
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-semibold text-white">Analytics Cookies</p>
-                <p className="text-xs text-gray-400">Help us understand how visitors interact</p>
+                <p className="text-xs text-gray-400">
+                  Help us understand how visitors interact
+                </p>
               </div>
               <button
                 onClick={() => setAnalytics(!analytics)}
                 className={`relative h-6 w-11 rounded-full transition ${analytics ? "bg-cyan-500" : "bg-gray-600"}`}
               >
-                <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white transition ${analytics ? "left-5" : "left-0.5"}`} />
+                <span
+                  className={`absolute top-0.5 h-5 w-5 rounded-full bg-white transition ${analytics ? "left-5" : "left-0.5"}`}
+                />
               </button>
             </div>
           </div>
         </div>
 
-        <div className="mt-6 flex gap-3">
+        <div className="mt-6 grid grid-cols-2 gap-3">
           <button
-            onClick={onClose}
-            className="flex-1 rounded-xl bg-gray-700 py-2.5 text-sm font-semibold text-white hover:bg-gray-600 transition"
+            onClick={requestClose}
+            className="flex items-center justify-center rounded-xl border border-gray-600 bg-gray-800 px-3 py-3 text-[15px] font-semibold text-gray-100 transition-all duration-150 hover:border-gray-500 hover:bg-gray-700 hover:scale-[1.01] active:scale-[0.99] hover:shadow-md hover:shadow-black/20"
           >
             Cancel
           </button>
           <button
-            onClick={() => {
-              onSave({ necessary: true, analytics });
-            }}
-            className="flex-1 rounded-xl bg-linear-to-r from-cyan-500 to-blue-500 py-2.5 text-sm font-semibold text-white transition hover:shadow-lg"
+            onClick={requestSave}
+            className="flex items-center justify-center rounded-xl bg-linear-to-r from-cyan-500 to-blue-500 px-3 py-3 text-[15px] font-semibold text-white transition-all duration-150 hover:scale-[1.01] active:scale-[0.99] hover:shadow-lg hover:shadow-cyan-500/20"
           >
             Save Preferences
           </button>
@@ -98,7 +143,7 @@ export function CookieBanner() {
       const now = Date.now();
 
       if (consent === "accepted" || consent === "managed") {
-        if (lastAcceptDate && (now - parseInt(lastAcceptDate)) < oneMonth) {
+        if (lastAcceptDate && now - parseInt(lastAcceptDate) < oneMonth) {
           setVisible(false);
           return;
         } else {
@@ -175,15 +220,30 @@ export function CookieBanner() {
             <div className="flex items-center gap-3">
               <div
                 className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
-                style={{ background: "rgba(6,182,212,0.12)", border: "1px solid rgba(6,182,212,0.25)" }}
+                style={{
+                  background: "rgba(6,182,212,0.12)",
+                  border: "1px solid rgba(6,182,212,0.25)",
+                }}
               >
-                <Cookie className="h-4 w-4" style={{ color: "var(--accent-cyan)" }} />
+                <Cookie
+                  className="h-4 w-4"
+                  style={{ color: "var(--accent-cyan)" }}
+                />
               </div>
               <div>
-                <p className="text-sm font-bold" style={{ color: "var(--text-primary)", fontFamily: "var(--font-display)" }}>
+                <p
+                  className="text-sm font-bold"
+                  style={{
+                    color: "var(--text-primary)",
+                    fontFamily: "var(--font-display)",
+                  }}
+                >
                   🍪 Cookie Notice
                 </p>
-                <p className="text-xs" style={{ color: "var(--text-secondary)" }}>
+                <p
+                  className="text-xs"
+                  style={{ color: "var(--text-secondary)" }}
+                >
                   mymevert.id
                 </p>
               </div>
@@ -200,24 +260,24 @@ export function CookieBanner() {
 
           <div className="flex flex-col md:flex-row md:items-center md:gap-6">
             <p className="text-sm leading-relaxed mb-4 md:mb-0 md:flex-1 text-gray-300">
-              We use cookies to manage user sessions and improve your browsing experience. No personal data is sold or shared with third parties.
+              We use cookies to manage user sessions and improve your browsing
+              experience. No personal data is sold or shared with third parties.
             </p>
 
-            <div className="flex items-center gap-2 shrink-0">
+            <div className="flex flex-col md:flex-row items-stretch md:items-center gap-2 shrink-0">
               <button
                 onClick={() => dismiss("accepted")}
-                className="glow-btn flex-1 md:flex-none rounded-xl py-2.5 px-6 text-sm font-semibold text-white"
-                style={{ background: "var(--grad-primary)", fontFamily: "var(--font-display)" }}
+                className="glow-btn flex w-full items-center justify-center rounded-xl border border-cyan-400/30 bg-linear-to-r from-cyan-500 to-blue-500 px-5 py-2.5 text-sm font-semibold text-white text-center transition-all duration-150 hover:translate-y-[-1px] hover:shadow-lg hover:shadow-cyan-500/25 active:translate-y-[0px] active:scale-[0.99] md:w-auto md:min-w-[170px]"
+                style={{
+                  fontFamily: "var(--font-display)",
+                }}
               >
                 Accept All
               </button>
               <button
                 onClick={() => dismiss("managed")}
-                className="flex items-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-medium transition-all"
+                className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-gray-600 bg-gray-800 px-4 py-2.5 text-sm font-semibold text-gray-100 transition-all duration-150 hover:border-gray-500 hover:bg-gray-700 hover:translate-y-[-1px] hover:shadow-md hover:shadow-black/20 active:translate-y-[0px] active:scale-[0.99] md:w-auto md:min-w-[120px]"
                 style={{
-                  background: "var(--bg-elevated)",
-                  border: "1px solid var(--border-mid)",
-                  color: "var(--text-secondary)",
                   fontFamily: "var(--font-display)",
                 }}
               >
