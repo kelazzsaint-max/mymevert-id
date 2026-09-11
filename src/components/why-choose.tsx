@@ -90,7 +90,7 @@ export function WhyChoose() {
                 }}
               >
                 <div
-                  className="inline-flex h-12 w-12 items-center justify-center rounded-xl p-0.5"
+                  className="reveal-icon inline-flex h-12 w-12 items-center justify-center rounded-xl p-0.5"
                   style={{
                     background: `linear-gradient(135deg, ${item.gradStart}, ${item.gradEnd})`,
                   }}

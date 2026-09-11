@@ -40,7 +40,7 @@ function CookieSettingsModal({
   };
 
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+    <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/70 md:backdrop-blur-sm">
       <div
         className="relative mx-4 w-full max-w-md rounded-2xl bg-gray-900 p-6 shadow-2xl border border-gray-700"
         style={{
@@ -113,7 +113,7 @@ function CookieSettingsModal({
         <div className="mt-6 grid grid-cols-2 gap-3">
           <button
             onClick={requestClose}
-            className="flex items-center justify-center rounded-xl border border-gray-600 bg-gray-800 px-3 py-3 text-[15px] font-semibold text-gray-100 transition-all duration-150 hover:border-gray-500 hover:bg-gray-700 hover:scale-[1.01] active:scale-[0.99] hover:shadow-md hover:shadow-black/20"
+            className="flex items-center justify-center rounded-xl border border-gray-600 bg-gray-800 px-3 py-3 text-[15px] font-semibold text-gray-100 transition-[transform,filter] duration-75 hover:border-accent-cyan hover:bg-gray-700 hover:shadow-md hover:shadow-black/20 active:scale-95 active:brightness-75"
           >
             Cancel
           </button>
@@ -213,7 +213,7 @@ export function CookieBanner() {
         }}
       >
         <div
-          className="grad-border glass-card corner-bracket rounded-2xl p-5 md:p-6 w-full"
+          className="grad-border glass-card-overlay corner-bracket rounded-2xl p-5 md:p-6 w-full"
           style={{ boxShadow: "var(--shadow-elevated)" }}
         >
           <div className="flex items-start justify-between gap-3 mb-3">
@@ -250,7 +250,7 @@ export function CookieBanner() {
             </div>
             <button
               onClick={() => dismiss("declined")}
-              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition-all hover:bg-bg-elevated"
+              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition-[transform,filter] duration-75 hover:bg-bg-elevated hover:border-accent-cyan active:scale-95 active:brightness-75"
               style={{ color: "var(--text-muted)" }}
               aria-label="Close"
             >

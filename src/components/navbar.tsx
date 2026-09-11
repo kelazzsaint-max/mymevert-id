@@ -74,8 +74,10 @@ export function Navbar() {
 
   const handleMobileLinkClick = (href: string) => {
     closeMenu();
-    const el = document.getElementById(href.replace("#", ""));
-    el?.scrollIntoView();
+    setTimeout(() => {
+      const el = document.getElementById(href.replace("#", ""));
+      el?.scrollIntoView({ behavior: "smooth" });
+    }, 200);
   };
 
   useEffect(() => {

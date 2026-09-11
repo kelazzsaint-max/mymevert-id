@@ -104,7 +104,7 @@ export function BackendStatusBanner() {
       }}
     >
       <div
-        className="grad-border glass-card corner-bracket rounded-2xl p-5 md:p-6 w-full"
+        className="grad-border glass-card-overlay corner-bracket rounded-2xl p-5 md:p-6 w-full"
         style={{ boxShadow: "var(--shadow-elevated)" }}
       >
         <div className="flex items-start justify-between gap-3 mb-3">
@@ -135,7 +135,7 @@ export function BackendStatusBanner() {
           </div>
           <button
             onClick={dismiss}
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition-all hover:bg-bg-elevated"
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition-[transform,filter] duration-75 hover:bg-bg-elevated hover:border-accent-cyan active:scale-95 active:brightness-75"
             style={{ color: "var(--text-muted)" }}
             aria-label="Close"
           >
