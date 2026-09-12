@@ -56,7 +56,10 @@ export function BackendStatusBanner() {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
 
-      fetch(`${apiUrl}/health`, { signal: controller.signal })
+      fetch(`${apiUrl}/health`, {
+        signal: controller.signal,
+        headers: { "ngrok-skip-browser-warning": "true" },
+      })
         .then(async (res) => {
           if (!res.ok) throw new Error("not ok");
           const data = await res.json();
