@@ -267,7 +267,7 @@ export function CookieBanner() {
             <div className="flex flex-col md:flex-row items-stretch md:items-center gap-2 shrink-0">
               <button
                 onClick={() => dismiss("accepted")}
-                className="glow-btn flex w-full items-center justify-center rounded-xl border border-cyan-400/30 bg-linear-to-r from-cyan-500 to-blue-500 px-5 py-2.5 text-sm font-semibold text-white text-center transition-all duration-150 hover:translate-y-[-1px] hover:shadow-lg hover:shadow-cyan-500/25 active:translate-y-[0px] active:scale-[0.99] md:w-auto md:min-w-[170px]"
+                className="glow-btn flex w-full items-center justify-center rounded-xl border border-cyan-400/30 bg-linear-to-r from-cyan-500 to-blue-500 px-5 py-2.5 text-sm font-semibold text-white text-center transition-all duration-150 hover:-translate-y-px hover:shadow-lg hover:shadow-cyan-500/25 active:translate-y-0 active:scale-[0.99] md:w-auto md:min-w-42.5"
                 style={{
                   fontFamily: "var(--font-display)",
                 }}
@@ -276,7 +276,7 @@ export function CookieBanner() {
               </button>
               <button
                 onClick={() => dismiss("managed")}
-                className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-gray-600 bg-gray-800 px-4 py-2.5 text-sm font-semibold text-gray-100 transition-all duration-150 hover:border-gray-500 hover:bg-gray-700 hover:translate-y-[-1px] hover:shadow-md hover:shadow-black/20 active:translate-y-[0px] active:scale-[0.99] md:w-auto md:min-w-[120px]"
+                className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-gray-600 bg-gray-800 px-4 py-2.5 text-sm font-semibold text-gray-100 transition-all duration-150 hover:border-gray-500 hover:bg-gray-700 hover:-translate-y-px hover:shadow-md hover:shadow-black/20 active:translate-y-0 active:scale-[0.99] md:w-auto md:min-w-30"
                 style={{
                   fontFamily: "var(--font-display)",
                 }}

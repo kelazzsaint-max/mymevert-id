@@ -18,6 +18,7 @@ export function Hero() {
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: deferring browser-only check (matchMedia/connection) until after mount to avoid SSR/client hydration mismatch
       setShouldLoadVideo(false);
       return;
     }
